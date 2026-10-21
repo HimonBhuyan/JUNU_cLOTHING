@@ -1149,33 +1149,50 @@
     </div>
   </footer>
 
-  <!-- Standardized Mobile Navigation Drawer -->
-  <div id="mobile-nav-backdrop" onclick="closeMobileNavDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-  <aside id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-surface-container-low border-r border-outline-variant/30 z-50 -translate-x-full transition-transform duration-300 flex flex-col p-6 shadow-2xl h-full max-h-screen">
-    <div class="flex items-center justify-between pb-6 border-b border-outline-variant/20 flex-shrink-0">
+  <!-- Unified Responsive Drawer Backdrop Overlay -->
+  <div id="drawer-overlay" onclick="closeCartDrawer(); closeWishlistDrawer(); closeMobileNavDrawer();" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- Responsive Mobile Navigation Drawer (Sidebar) -->
+  <aside id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-[85vw] max-w-xs sm:w-80 bg-surface-container-low border-r border-outline-variant/30 z-50 -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl p-5 sm:p-6 space-y-5 sm:space-y-6 h-full max-h-screen overflow-y-auto overscroll-contain">
+    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-4 flex-shrink-0">
       <div class="flex flex-col">
-        <span class="font-headline-lg text-xl tracking-[0.2em] text-primary uppercase">JUNU</span>
-        <span class="font-label-sm text-[8px] tracking-[0.28em] uppercase text-secondary font-semibold">ROSELYN MAGAR</span>
+        <span class="font-headline-lg text-2xl tracking-[0.2em] text-primary uppercase">JUNU</span>
+        <span class="font-label-sm text-[9px] tracking-[0.3em] uppercase text-secondary font-semibold">ROSELYN MAGAR</span>
       </div>
-      <button onclick="closeMobileNavDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Menu">
-        <span class="material-symbols-outlined text-[20px]">close</span>
+      <button onclick="closeMobileNavDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Navigation Menu">
+        <span class="material-symbols-outlined text-[22px]">close</span>
       </button>
     </div>
     
-    <nav class="flex flex-col space-y-4 font-label-md text-sm uppercase tracking-wider py-6 flex-1 overflow-y-auto">
-      <a onclick="closeMobileNavDrawer()" href="collections.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Collections</a>
-      <a onclick="closeMobileNavDrawer()" href="statements.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Statements</a>
-      <a onclick="closeMobileNavDrawer()" href="bespoke.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Bespoke Protocol</a>
-      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Atelier Craft</a>
-      <a onclick="closeMobileNavDrawer()" href="chronicles.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Chronicles</a>
-      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">House of JUNU</a>
-      <a onclick="closeMobileNavDrawer()" href="checkout.html" class="text-secondary hover:text-primary py-1 transition-colors flex items-center justify-between font-semibold border-t border-outline-variant/20 pt-3">
+    <nav class="flex flex-col space-y-3 sm:space-y-4 font-headline-sm text-base flex-1">
+      <a onclick="closeMobileNavDrawer()" href="collections.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Curated Catalog</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="statements.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Statements</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="bespoke.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Custom Fit</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="chronicles.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Stories</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>The Maison</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="checkout.html" class="text-secondary hover:text-primary py-1.5 transition-colors flex items-center justify-between font-semibold border-t border-outline-variant/20 pt-3">
         <span class="flex items-center space-x-2">
           <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
           <span>Order Checkout</span>
         </span>
         <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
       </a>
+    
       <button onclick="closeMobileNavDrawer(); openWishlistDrawer();" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between text-left">
         <span class="flex items-center space-x-2">
           <span class="material-symbols-outlined text-[18px] text-secondary">favorite</span>
@@ -1186,6 +1203,7 @@
     </nav>
     
     <div class="pt-4 border-t border-outline-variant/20 flex flex-col space-y-3 flex-shrink-0">
+      <!-- Mobile Currency Switcher -->
       <div class="flex items-center justify-between p-2.5 bg-surface-container border border-outline-variant/30 text-xs">
         <span class="text-outline uppercase tracking-wider font-label-sm">Currency:</span>
         <select onchange="setCurrency(this.value); document.querySelectorAll('#currency-picker').forEach(el => el.value = this.value);" class="mobile-currency-select bg-surface border border-outline-variant/40 px-2.5 py-1 text-primary text-xs uppercase font-mono font-semibold tracking-wider focus:outline-none focus:border-secondary">
@@ -1195,6 +1213,7 @@
         </select>
       </div>
 
+      <!-- Mobile Theme Switcher Button -->
       <button onclick="toggleTheme()" class="w-full py-2.5 px-3 bg-surface-container border border-outline-variant/40 text-primary text-xs uppercase tracking-wider font-semibold flex items-center justify-between hover:border-secondary transition-colors">
         <span class="flex items-center space-x-2">
           <span class="material-symbols-outlined text-[16px] text-secondary">contrast</span>

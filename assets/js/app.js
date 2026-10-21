@@ -583,6 +583,63 @@ if (typeof module !== 'undefined' && module.exports) {
 // 6. Responsive Sidebars & Slide-out Drawers (Nav, Cart, Wishlist)
 // =========================================================================
 let savedBodyScrollTop = 0;
+let touchStartY = 0;
+
+function handleTouchStart(e) {
+  if (e.touches && e.touches.length === 1) {
+    touchStartY = e.touches[0].clientY;
+  }
+}
+
+function handleTouchMove(e) {
+  if (!document.documentElement.classList.contains('junu-drawer-open')) return;
+
+  const target = e.target;
+  const drawer = target.closest('#mobile-nav-drawer, #cart-drawer, #wishlist-drawer');
+
+  // If touch is outside all drawers (e.g. on overlay, header, background page)
+  if (!drawer) {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    return;
+  }
+
+  // Inside the drawer: determine scrollable container
+  const scrollElement = target.closest('#cart-items-container, #wishlist-items-container') || drawer;
+  const isScrollable = scrollElement.scrollHeight > scrollElement.clientHeight;
+
+  if (!isScrollable) {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    return;
+  }
+
+  // Prevent rubberband scroll-chaining to the document
+  if (e.touches && e.touches.length === 1) {
+    const currentY = e.touches[0].clientY;
+    const isAtTop = scrollElement.scrollTop <= 0;
+    const isAtBottom = (scrollElement.scrollTop + scrollElement.clientHeight) >= (scrollElement.scrollHeight - 1);
+
+    if (isAtTop && currentY > touchStartY) {
+      // Swiping down while already at the top of drawer
+      if (e.cancelable) e.preventDefault();
+    } else if (isAtBottom && currentY < touchStartY) {
+      // Swiping up while already at the bottom of drawer
+      if (e.cancelable) e.preventDefault();
+    }
+  }
+}
+
+function handleWheel(e) {
+  if (!document.documentElement.classList.contains('junu-drawer-open')) return;
+  const target = e.target;
+  const drawer = target.closest('#mobile-nav-drawer, #cart-drawer, #wishlist-drawer');
+  if (!drawer) {
+    if (e.cancelable) e.preventDefault();
+  }
+}
 
 function lockBodyScroll() {
   if (document.documentElement.classList.contains('junu-drawer-open')) return;
@@ -594,6 +651,10 @@ function lockBodyScroll() {
   document.body.style.left = '0';
   document.body.style.right = '0';
   document.body.style.width = '100%';
+
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
+  document.addEventListener('touchmove', handleTouchMove, { passive: false });
+  document.addEventListener('wheel', handleWheel, { passive: false });
 }
 
 function unlockBodyScroll() {
@@ -608,6 +669,10 @@ function unlockBodyScroll() {
 
   if (navOpen || cartOpen || wishOpen) return;
 
+  document.removeEventListener('touchstart', handleTouchStart);
+  document.removeEventListener('touchmove', handleTouchMove);
+  document.removeEventListener('wheel', handleWheel);
+
   document.documentElement.classList.remove('junu-drawer-open');
   document.body.classList.remove('junu-drawer-open', 'overflow-hidden');
   document.body.style.position = '';
@@ -619,10 +684,22 @@ function unlockBodyScroll() {
 }
 
 function openMobileNavDrawer() {
-  closeCartDrawer();
-  closeWishlistDrawer();
+  // Close other drawers silently without unlocking scroll
+  const cartDrawer = document.getElementById('cart-drawer');
+  if (cartDrawer) {
+    cartDrawer.classList.add('translate-x-full');
+    cartDrawer.style.visibility = 'hidden';
+    cartDrawer.style.pointerEvents = 'none';
+  }
+  const wishDrawer = document.getElementById('wishlist-drawer');
+  if (wishDrawer) {
+    wishDrawer.classList.add('translate-x-full');
+    wishDrawer.style.visibility = 'hidden';
+    wishDrawer.style.pointerEvents = 'none';
+  }
+
   const drawer = document.getElementById('mobile-nav-drawer');
-  const overlay = document.getElementById('drawer-overlay');
+  const overlay = document.getElementById('drawer-overlay') || document.getElementById('mobile-nav-backdrop');
   if (drawer) {
     drawer.classList.remove('-translate-x-full');
     drawer.style.visibility = 'visible';
@@ -637,7 +714,7 @@ function openMobileNavDrawer() {
 
 function closeMobileNavDrawer() {
   const drawer = document.getElementById('mobile-nav-drawer');
-  const overlay = document.getElementById('drawer-overlay');
+  const overlay = document.getElementById('drawer-overlay') || document.getElementById('mobile-nav-backdrop');
   if (drawer) {
     drawer.classList.add('-translate-x-full');
     drawer.style.visibility = 'hidden';
@@ -651,8 +728,19 @@ function closeMobileNavDrawer() {
 }
 
 function openCartDrawer() {
-  closeMobileNavDrawer();
-  closeWishlistDrawer();
+  const navDrawer = document.getElementById('mobile-nav-drawer');
+  if (navDrawer) {
+    navDrawer.classList.add('-translate-x-full');
+    navDrawer.style.visibility = 'hidden';
+    navDrawer.style.pointerEvents = 'none';
+  }
+  const wishDrawer = document.getElementById('wishlist-drawer');
+  if (wishDrawer) {
+    wishDrawer.classList.add('translate-x-full');
+    wishDrawer.style.visibility = 'hidden';
+    wishDrawer.style.pointerEvents = 'none';
+  }
+
   updateCartDrawer();
   const drawer = document.getElementById('cart-drawer');
   const overlay = document.getElementById('drawer-overlay') || document.getElementById('cart-drawer-backdrop');
@@ -688,8 +776,19 @@ const openCart = openCartDrawer;
 const closeCart = closeCartDrawer;
 
 function openWishlistDrawer() {
-  closeMobileNavDrawer();
-  closeCartDrawer();
+  const navDrawer = document.getElementById('mobile-nav-drawer');
+  if (navDrawer) {
+    navDrawer.classList.add('-translate-x-full');
+    navDrawer.style.visibility = 'hidden';
+    navDrawer.style.pointerEvents = 'none';
+  }
+  const cartDrawer = document.getElementById('cart-drawer');
+  if (cartDrawer) {
+    cartDrawer.classList.add('translate-x-full');
+    cartDrawer.style.visibility = 'hidden';
+    cartDrawer.style.pointerEvents = 'none';
+  }
+
   updateWishlistDrawer();
   const drawer = document.getElementById('wishlist-drawer');
   const overlay = document.getElementById('drawer-overlay');
