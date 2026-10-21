@@ -997,9 +997,50 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCartDrawer();
   updateWishlistDrawer();
 
+  // Initialize Scarcity Drop Countdown Timer
+  initDropCountdown();
+
   // Initialize Scroll & Micro-Animations
   initScrollAnimations();
 });
+
+// =========================================================================
+// 10. Scarcity Drop Live Countdown Timer
+// =========================================================================
+function initDropCountdown() {
+  const timerEls = document.querySelectorAll('.drop-countdown-timer, #drop-countdown-timer');
+  if (!timerEls.length) return;
+
+  let targetTime = localStorage.getItem('junu_drop_target');
+  if (!targetTime) {
+    targetTime = Date.now() + (3 * 24 * 3600 + 14 * 3600 + 22 * 60 + 45) * 1000;
+    localStorage.setItem('junu_drop_target', targetTime);
+  } else {
+    targetTime = parseInt(targetTime, 10);
+    if (isNaN(targetTime) || targetTime <= Date.now()) {
+      targetTime = Date.now() + (3 * 24 * 3600 + 14 * 3600 + 22 * 60 + 45) * 1000;
+      localStorage.setItem('junu_drop_target', targetTime);
+    }
+  }
+
+  function update() {
+    const diff = Math.max(0, targetTime - Date.now());
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const timeStr = `LIVE IN ${pad(days)}D : ${pad(hours)}H : ${pad(minutes)}M : ${pad(seconds)}S`;
+
+    timerEls.forEach(el => {
+      el.textContent = timeStr;
+    });
+  }
+
+  update();
+  setInterval(update, 1000);
+}
 
 // =========================================================================
 // 10. Scroll Animations, Hairline Progress & Micro-Interactions
