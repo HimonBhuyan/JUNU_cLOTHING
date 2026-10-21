@@ -576,6 +576,42 @@ if (typeof module !== 'undefined' && module.exports) {
 // =========================================================================
 // 6. Responsive Sidebars & Slide-out Drawers (Nav, Cart, Wishlist)
 // =========================================================================
+let savedBodyScrollTop = 0;
+
+function lockBodyScroll() {
+  if (document.documentElement.classList.contains('junu-drawer-open')) return;
+  savedBodyScrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+  document.documentElement.classList.add('junu-drawer-open');
+  document.body.classList.add('junu-drawer-open', 'overflow-hidden');
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${savedBodyScrollTop}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+}
+
+function unlockBodyScroll() {
+  // Only restore if all drawers are closed
+  const navDrawer = document.getElementById('mobile-nav-drawer');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const wishDrawer = document.getElementById('wishlist-drawer');
+
+  const navOpen = navDrawer && !navDrawer.classList.contains('-translate-x-full');
+  const cartOpen = cartDrawer && !cartDrawer.classList.contains('translate-x-full');
+  const wishOpen = wishDrawer && !wishDrawer.classList.contains('translate-x-full');
+
+  if (navOpen || cartOpen || wishOpen) return;
+
+  document.documentElement.classList.remove('junu-drawer-open');
+  document.body.classList.remove('junu-drawer-open', 'overflow-hidden');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  window.scrollTo(0, savedBodyScrollTop);
+}
+
 function openMobileNavDrawer() {
   closeCartDrawer();
   closeWishlistDrawer();
@@ -590,7 +626,7 @@ function openMobileNavDrawer() {
     overlay.classList.remove('opacity-0', 'pointer-events-none');
     overlay.classList.add('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.add('overflow-hidden');
+  lockBodyScroll();
 }
 
 function closeMobileNavDrawer() {
@@ -605,7 +641,7 @@ function closeMobileNavDrawer() {
     overlay.classList.add('opacity-0', 'pointer-events-none');
     overlay.classList.remove('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.remove('overflow-hidden');
+  unlockBodyScroll();
 }
 
 function openCartDrawer() {
@@ -623,7 +659,7 @@ function openCartDrawer() {
     overlay.classList.remove('opacity-0', 'pointer-events-none');
     overlay.classList.add('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.add('overflow-hidden');
+  lockBodyScroll();
 }
 
 function closeCartDrawer() {
@@ -638,7 +674,7 @@ function closeCartDrawer() {
     overlay.classList.add('opacity-0', 'pointer-events-none');
     overlay.classList.remove('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.remove('overflow-hidden');
+  unlockBodyScroll();
 }
 
 // Backward compatibility aliases
@@ -660,7 +696,7 @@ function openWishlistDrawer() {
     overlay.classList.remove('opacity-0', 'pointer-events-none');
     overlay.classList.add('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.add('overflow-hidden');
+  lockBodyScroll();
 }
 
 function closeWishlistDrawer() {
@@ -675,7 +711,7 @@ function closeWishlistDrawer() {
     overlay.classList.add('opacity-0', 'pointer-events-none');
     overlay.classList.remove('opacity-100', 'pointer-events-auto');
   }
-  document.body.classList.remove('overflow-hidden');
+  unlockBodyScroll();
 }
 
 function updateWishlistDrawer() {
@@ -999,6 +1035,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Scarcity Drop Countdown Timer
   initDropCountdown();
+
+  // Prevent background touch drag on drawer overlay
+  const drawerOverlay = document.getElementById('drawer-overlay');
+  if (drawerOverlay) {
+    drawerOverlay.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+  }
 
   // Initialize Scroll & Micro-Animations
   initScrollAnimations();

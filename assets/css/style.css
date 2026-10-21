@@ -109,6 +109,27 @@ html, body {
   pointer-events: auto !important;
 }
 
+/* Bulletproof Mobile Scroll Lock for Open Drawers */
+html.junu-drawer-open,
+body.junu-drawer-open {
+  overflow: hidden !important;
+  height: 100% !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: auto !important;
+  overscroll-behavior: none !important;
+}
+
+/* Allow smooth scrolling inside drawer contents without pulling the page */
+#mobile-nav-drawer,
+#cart-drawer,
+#wishlist-drawer,
+#cart-items-container,
+#wishlist-items-container {
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+
 /* ==========================================================================
    HERO DUAL-THEME IMAGE SWITCHING & SCOPED DARK SCRIMS
    ========================================================================== */
