@@ -1,0 +1,20 @@
+{
+  "name": "junu-atelier",
+  "version": "1.0.0",
+  "description": "JUNU Atelier • Haute Couture & Limited Silhouettes by Roselyn Magar",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "deploy": "npx vercel --prod"
+  },
+  "keywords": [
+    "fashion",
+    "atelier",
+    "haute-couture",
+    "junu",
+    "corsetry",
+    "eveningwear"
+  ],
+  "author": "Roselyn Magar • JUNU Atelier",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Silhouette Not Found | JUNU Atelier • Roselyn Magar</title>
+  <meta name="description" content="The requested atelier piece or page is not available. Explore the curated monograph collection at JUNU Atelier.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#141312",
+            "surface-container-lowest": "#0f0e0d",
+            "surface-container-low": "#1d1b1a",
+            "surface-container": "#211f1e",
+            "surface-container-high": "#2b2928",
+            "surface-container-highest": "#363433",
+            "primary": "#f4ebd9",
+            "on-primary": "#141312",
+            "secondary": "#ecbf84",
+            "secondary-container": "#4a3b2c",
+            "on-secondary": "#241a0e",
+            "on-secondary-container": "#fbdcb4",
+            "outline": "#857f79",
+            "outline-variant": "#494541",
+            "on-surface": "#e6e1df",
+            "on-surface-variant": "#b5afa9",
+            "background": "#141312"
+          },
+          fontFamily: {
+            "headline-lg": ["'Playfair Display'", "serif"],
+            "headline-md": ["'Playfair Display'", "serif"],
+            "headline-sm": ["'Playfair Display'", "serif"],
+            "title-lg": ["'Playfair Display'", "serif"],
+            "body-md": ["'Plus Jakarta Sans'", "sans-serif"],
+            "body-sm": ["'Plus Jakarta Sans'", "sans-serif"],
+            "label-md": ["'Plus Jakarta Sans'", "sans-serif"],
+            "label-sm": ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary selection:text-on-secondary min-h-screen flex flex-col">
+
+  
+  <!-- Top Navbar (Google Stitch Luxury Architecture) -->
+  <header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Monogram -->
+      <a href="index.html" class="flex flex-col flex-shrink-0 group py-1" aria-label="JUNU Atelier Home">
+        <span class="font-headline-lg text-2xl sm:text-3xl tracking-[0.2em] text-primary group-hover:text-secondary transition-colors duration-200 uppercase font-medium">
+          JUNU
+        </span>
+        <span class="font-label-sm text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-secondary font-semibold -mt-1 group-hover:text-primary transition-colors">
+          ROSELYN MAGAR
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden xl:flex items-center space-x-6 2xl:space-x-8 text-[11px] font-label-md uppercase tracking-[0.16em] flex-shrink-0">
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="collections.html">Collections</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="statements.html">Statements</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="bespoke.html">Bespoke</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="atelier.html">Atelier</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="chronicles.html">Chronicles</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="about.html">About</a>
+      </nav>
+
+      <!-- Right Utilities Bar -->
+      <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+        
+        <!-- White/Dark Mode Toggle -->
+        <button id="theme-toggle-btn" class="w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary flex items-center justify-center text-primary transition-all duration-200" onclick="toggleTheme()" type="button" title="Toggle White Mode / Nocturne Mode" aria-label="Toggle White Mode">
+          <span class="material-symbols-outlined text-[17px] text-secondary" id="theme-icon">light_mode</span>
+        </button>
+
+        <!-- Currency Selector (Hidden on Mobile < 640px) -->
+        <div class="relative hidden sm:block">
+          <select id="currency-picker" onchange="setCurrency(this.value)" class="bg-surface-container border border-outline-variant/40 rounded-none px-2 py-1.5 font-label-sm text-[11px] uppercase text-primary focus:outline-none focus:border-secondary cursor-pointer tracking-wider">
+            <option value="NPR">NPR</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+        </div>
+
+        <!-- Wishlist Drawer Trigger (Hidden on Mobile < 640px) -->
+        <button onclick="openWishlistDrawer()" class="relative hidden sm:flex w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary items-center justify-center text-primary transition-all duration-200" aria-label="View Archival Wishlist" title="Archival Wishlist">
+          <span class="material-symbols-outlined text-[18px]">favorite</span>
+          <span id="wishlist-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Shopping Bag Trigger -->
+        <button onclick="openCartDrawer()" class="relative w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary flex items-center justify-center text-primary transition-all duration-200" aria-label="View Salon Bag" title="Salon Shopping Bag">
+          <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          <span id="cart-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Checkout Quick Link -->
+        <a href="checkout.html" class="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-primary text-on-primary hover:bg-secondary font-label-sm text-[11px] uppercase tracking-wider font-semibold transition-all shadow-sm" title="Go to Product Checkout">
+          <span class="material-symbols-outlined text-[13px]">lock</span>
+          <span>Checkout</span>
+        </a>
+
+        <!-- Instagram Direct Link -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="hidden 2xl:inline-flex items-center space-x-1 px-3 py-1.5 border border-secondary/80 text-secondary hover:bg-secondary hover:text-on-secondary font-label-sm text-[11px] uppercase tracking-wider transition-all duration-200 font-semibold" title="Connect with Roselyn Magar on Instagram">
+          <span class="material-symbols-outlined text-[13px]">send</span>
+          <span>@JUNU.CLO</span>
+        </a>
+
+        <!-- Mobile / Tablet Hamburger Button -->
+        <button onclick="openMobileNavDrawer()" class="xl:hidden w-9 h-9 flex items-center justify-center text-primary hover:text-secondary border border-outline-variant/40 bg-surface-container rounded-sm transition-colors" aria-label="Open Navigation Menu">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+  
+
+  <main class="flex-grow">
+    
+  <section class="min-h-[72vh] flex items-center justify-center py-20 px-4 text-center">
+    <div class="max-w-xl mx-auto space-y-6">
+      <span class="inline-block px-3.5 py-1.5 bg-surface-container-high border border-secondary/30 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+        Salon Nocturne • Error 404
+      </span>
+      <h1 class="font-headline-lg text-4xl sm:text-5xl text-primary font-serif">
+        Silhouette Not Found
+      </h1>
+      <p class="font-body-md text-sm sm:text-base text-on-surface-variant max-w-md mx-auto leading-relaxed">
+        The haute couture archive or numbered creation you are seeking is not currently on display. Explore our 15 numbered silhouettes or return to the Kathmandu Atelier.
+      </p>
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="collections.html" class="w-full sm:w-auto px-8 py-3.5 bg-primary text-on-primary hover:bg-secondary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold transition-all shadow-md">
+          Explore Curated Catalog
+        </a>
+        <a href="index.html" class="w-full sm:w-auto px-8 py-3.5 bg-surface-container border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold transition-all">
+          Return to Atelier
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  
+  <!-- Luxury Atelier Footer -->
+  <footer class="w-full bg-surface-container-lowest text-on-surface-variant pt-16 pb-12 border-t border-outline-variant/30 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-12">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 border-b border-outline-variant/20">
+        
+        <div class="lg:col-span-2 space-y-4 pr-6">
+          <span class="font-headline-lg text-2xl tracking-[0.22em] text-primary uppercase font-medium">JUNU</span>
+          <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed max-w-sm">
+            Haute Couture Atelier founded by Roselyn Magar. Specialized in structural corsetry, spiral steel armatures, and hand-draped evening gowns.
+          </p>
+          <div class="flex items-center space-x-4 pt-2">
+            <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-primary transition-colors font-label-sm text-xs uppercase tracking-wider">
+              Instagram @junu.clo
+            </a>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">Navigation</h4>
+          <ul class="space-y-2 text-xs font-body-sm">
+            <li><a href="collections.html" class="hover:text-secondary transition-colors">The Monograph (15)</a></li>
+            <li><a href="statements.html" class="hover:text-secondary transition-colors">Statement Creations</a></li>
+            <li><a href="bespoke.html" class="hover:text-secondary transition-colors">Bespoke Armature</a></li>
+            <li><a href="atelier.html" class="hover:text-secondary transition-colors">Atelier & Appointments</a></li>
+            <li><a href="chronicles.html" class="hover:text-secondary transition-colors">Editorial Chronicles</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">Orders & Checkout</h4>
+          <ul class="space-y-2 text-xs font-body-sm">
+            <li><a href="checkout.html" class="hover:text-secondary transition-colors font-semibold text-secondary">Proceed to Checkout</a></li>
+            <li><a href="https://ig.me/m/junu.clo" target="_blank" rel="noopener noreferrer" class="hover:text-secondary transition-colors">Order via Instagram DM</a></li>
+            <li><a href="https://wa.me/9779800000000" target="_blank" rel="noopener noreferrer" class="hover:text-secondary transition-colors">WhatsApp Concierge</a></li>
+            <li><a href="bespoke.html" class="hover:text-secondary transition-colors">3D Measurement Guide</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">Atelier Concierge</h4>
+          <ul class="space-y-2 text-xs font-body-sm">
+            <li><a href="bespoke.html" class="hover:text-secondary transition-colors">Virtual Fitting Protocol</a></li>
+            <li><a href="about.html" class="hover:text-secondary transition-colors">Our Philosophy</a></li>
+            <li><a href="about.html" class="hover:text-secondary transition-colors">Roselyn Magar Story</a></li>
+            <li><span class="text-outline">Online Atelier • Dispatched Worldwide</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs font-label-sm text-outline gap-4">
+        <div class="flex items-center space-x-6">
+          <span>KATHMANDU • PARIS • SALON NOCTURNE</span>
+          <span class="text-secondary">LIMITED NUMBERED CREATIONS</span>
+        </div>
+        <div>
+          © 2026 JUNU ATELIER. ALL RIGHTS RESERVED. CREATIVE DIRECTION: ROSELYN MAGAR.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Unified Responsive Drawer Backdrop Overlay -->
+  <div id="drawer-overlay" onclick="closeCartDrawer(); closeWishlistDrawer(); closeMobileNavDrawer();" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- Responsive Mobile Navigation Drawer (Sidebar) -->
+  <aside id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-[85vw] max-w-xs sm:w-80 bg-surface-container-low border-r border-outline-variant/30 z-50 -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl p-5 sm:p-6 space-y-5 sm:space-y-6 h-full max-h-screen overflow-y-auto overscroll-contain">
+    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-4 flex-shrink-0">
+      <div class="flex flex-col">
+        <span class="font-headline-lg text-2xl tracking-[0.2em] text-primary uppercase">JUNU</span>
+        <span class="font-label-sm text-[9px] tracking-[0.3em] uppercase text-secondary font-semibold">ROSELYN MAGAR</span>
+      </div>
+      <button onclick="closeMobileNavDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Navigation Menu">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+    </div>
+    
+    <nav class="flex flex-col space-y-3 sm:space-y-4 font-headline-sm text-base flex-1">
+      <a onclick="closeMobileNavDrawer()" href="collections.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Curated Catalog</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="statements.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Statements</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="bespoke.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Custom Fit</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="atelier.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Our Craft</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="chronicles.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>Stories</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between">
+        <span>About Us</span>
+        <span class="material-symbols-outlined text-[16px] text-outline">arrow_forward</span>
+      </a>
+      <a onclick="closeMobileNavDrawer()" href="checkout.html" class="text-secondary hover:text-primary py-1.5 transition-colors flex items-center justify-between font-semibold border-t border-outline-variant/20 pt-3">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          <span>Order Checkout</span>
+        </span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    
+      <button onclick="closeMobileNavDrawer(); openWishlistDrawer();" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between text-left">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[18px] text-secondary">favorite</span>
+          <span>Saved Favorites</span>
+        </span>
+        <span id="mobile-wishlist-badge" class="px-2 py-0.5 bg-secondary/20 text-secondary text-xs font-mono font-bold rounded-full">0</span>
+      </button>
+    </nav>
+    
+    <div class="pt-4 border-t border-outline-variant/20 flex flex-col space-y-3 flex-shrink-0">
+      <!-- Mobile Currency Switcher -->
+      <div class="flex items-center justify-between p-2.5 bg-surface-container border border-outline-variant/30 text-xs">
+        <span class="text-outline uppercase tracking-wider font-label-sm">Currency:</span>
+        <select onchange="setCurrency(this.value); document.querySelectorAll('#currency-picker').forEach(el => el.value = this.value);" class="mobile-currency-select bg-surface border border-outline-variant/40 px-2.5 py-1 text-primary text-xs uppercase font-mono font-semibold tracking-wider focus:outline-none focus:border-secondary">
+          <option value="NPR">NPR (Rs.)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+
+      <!-- Mobile Theme Switcher Button -->
+      <button onclick="toggleTheme()" class="w-full py-2.5 px-3 bg-surface-container border border-outline-variant/40 text-primary text-xs uppercase tracking-wider font-semibold flex items-center justify-between hover:border-secondary transition-colors">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[16px] text-secondary">contrast</span>
+          <span>Theme Mode</span>
+        </span>
+        <span class="material-symbols-outlined text-[17px] text-secondary mobile-theme-icon">light_mode</span>
+      </button>
+
+      <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary text-xs uppercase tracking-wider font-semibold text-center flex items-center justify-center space-x-2">
+        <span class="material-symbols-outlined text-[15px]">send</span>
+        <span>Instagram @junu.clo</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Responsive Shopping Bag Drawer (Cart Sidebar) -->
+  <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:max-w-md bg-surface-container-low border-l border-outline-variant/30 z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl h-full max-h-screen">
+    <div class="p-4 sm:p-6 border-b border-outline-variant/20 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2">
+        <span class="material-symbols-outlined text-secondary">shopping_bag</span>
+        <h3 class="font-headline-sm text-lg text-primary font-normal">Shopping Bag</h3>
+        <span id="cart-total-count" class="font-label-sm text-xs text-on-surface-variant font-medium">(0 Pieces)</span>
+      </div>
+      <button onclick="closeCartDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Bag">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+      <!-- Injected Cart Items -->
+    </div>
+
+    <div class="p-4 sm:p-6 border-t border-outline-variant/20 bg-surface-container space-y-3 sm:space-y-4 flex-shrink-0">
+      <div class="flex items-center justify-between font-label-md">
+        <span class="text-on-surface-variant text-xs uppercase tracking-wider">Subtotal:</span>
+        <span id="cart-subtotal" class="font-headline-md text-xl text-primary font-normal">Rs. 0</span>
+      </div>
+      <p class="font-body-sm text-[11px] text-outline">
+        * All taxes and luxury gift packaging included. Easy ordering and fast support via WhatsApp or Instagram.
+      </p>
+      <a href="checkout.html" class="w-full py-3 px-6 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold text-center transition-all flex items-center justify-center space-x-2 shadow-md">
+        <span class="material-symbols-outlined text-[16px]">lock</span>
+        <span>Proceed to Checkout</span>
+      </a>
+
+      <!-- Instant IG / WhatsApp Order Buttons -->
+      <div class="grid grid-cols-2 gap-2 sm:gap-3 pt-1">
+        <a href="collections.html" onclick="closeCartDrawer()" class="py-2.5 px-2 sm:px-3 bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] uppercase tracking-wider font-semibold text-center transition-all flex items-center justify-center space-x-1">
+          <span class="material-symbols-outlined text-[14px] text-secondary">add_shopping_cart</span>
+          <span>Add More</span>
+        </a>
+        <button onclick="checkoutViaWhatsApp()" class="py-2.5 px-2 sm:px-3 bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] uppercase tracking-wider font-semibold text-center transition-all flex items-center justify-center space-x-1">
+          <span class="material-symbols-outlined text-[14px] text-secondary">chat</span>
+          <span>WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Responsive Saved Favorites Drawer (Wishlist Sidebar) -->
+  <aside id="wishlist-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:max-w-md bg-surface-container-low border-l border-outline-variant/30 z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl h-full max-h-screen">
+    <div class="p-4 sm:p-6 border-b border-outline-variant/20 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2">
+        <span class="material-symbols-outlined text-secondary">favorite</span>
+        <h3 class="font-headline-sm text-lg text-primary font-normal">Saved Favorites</h3>
+        <span id="wishlist-total-count" class="font-label-sm text-xs text-on-surface-variant font-medium">(0 Pieces)</span>
+      </div>
+      <button onclick="closeWishlistDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Wishlist">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+      <!-- Injected Wishlist Items -->
+    </div>
+
+    <div class="p-4 sm:p-6 border-t border-outline-variant/20 bg-surface-container space-y-3 flex-shrink-0">
+      <button onclick="shareWishlistToInstagram()" class="w-full py-3.5 px-6 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold text-center transition-all flex items-center justify-center space-x-2 shadow-md">
+        <span class="material-symbols-outlined text-[16px]">send</span>
+        <span>Share Wishlist to Instagram DM</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Haute Couture Quickview Modal -->
+  <div id="quickview-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-outline-variant/40 w-full max-w-3xl max-h-[92vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+      <button onclick="closeProductQuickview()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors p-2 z-10" aria-label="Close Quickview">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+      <div id="quickview-content"></div>
+    </div>
+  </div>
+
+  <!-- Bespoke 3D Measurement Protocol Modal -->
+  <div id="measure-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-outline-variant/40 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl space-y-6">
+      <button onclick="closeMeasurementGuideModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors p-2 z-10" aria-label="Close Guide">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+      <div class="border-b border-outline-variant/30 pb-4">
+        <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-secondary font-semibold">Couturier Standards</span>
+        <h3 class="font-headline-lg text-2xl text-primary font-normal mt-1">3D Anatomical Measurement Protocol</h3>
+        <p class="font-body-sm text-xs text-on-surface-variant font-light mt-1">
+          For custom made-to-measure orders and bespoke steel boning commissions, we require 4 precise anatomical circumference points.
+        </p>
+      </div>
+
+      <div class="space-y-4 text-sm font-body-md">
+        <div class="p-4 bg-surface-container border border-outline-variant/20 flex items-start space-x-3">
+          <span class="font-headline-md text-xl text-secondary">A</span>
+          <div>
+            <h4 class="font-headline-sm text-sm text-primary font-semibold uppercase">1. Overbust & Full Bust</h4>
+            <p class="font-body-sm text-xs text-on-surface-variant font-light mt-0.5">Measure horizontally across the fullest point of the bust while wearing an unpadded supportive bralette.</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-surface-container border border-outline-variant/20 flex items-start space-x-3">
+          <span class="font-headline-md text-xl text-secondary">B</span>
+          <div>
+            <h4 class="font-headline-sm text-sm text-primary font-semibold uppercase">2. Underbust Ribcage</h4>
+            <p class="font-body-sm text-xs text-on-surface-variant font-light mt-0.5">Directly beneath the breast tissue along the lower ribcage line.</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-surface-container border border-outline-variant/20 flex items-start space-x-3">
+          <span class="font-headline-md text-xl text-secondary">C</span>
+          <div>
+            <h4 class="font-headline-sm text-sm text-primary font-semibold uppercase">3. Natural Waist</h4>
+            <p class="font-body-sm text-xs text-on-surface-variant font-light mt-0.5">The narrowest indentation of the torso, approximately 2 inches above the navel.</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-surface-container border border-outline-variant/20 flex items-start space-x-3">
+          <span class="font-headline-md text-xl text-secondary">D</span>
+          <div>
+            <h4 class="font-headline-sm text-sm text-primary font-semibold uppercase">4. High Hip & Illiac Crest</h4>
+            <p class="font-body-sm text-xs text-on-surface-variant font-light mt-0.5">Across the top curve of the pelvic hip bones where the corset base terminates.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeMeasurementGuideModal()" class="px-6 py-2.5 bg-primary text-on-primary font-label-sm text-xs uppercase tracking-wider font-semibold">
+          Understood & Verified
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editorial Story Reader Modal -->
+  <div id="story-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-outline-variant/40 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+      <button onclick="closeStoryReader()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors p-2 z-10" aria-label="Close Chronicle">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+      <div id="story-content"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+  
+
+</body>
+</html>

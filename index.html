@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="web_standard" name="shell-type">
+  <title>JUNU Atelier | Haute Couture • Wear Your Power</title>
+  <meta name="description" content="JUNU Official Atelier. Sculptural corsetry, liquid lamé eveningwear, and limited numbered silhouettes curated by Roselyn Magar in Kathmandu, Nepal.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/junu_official_logo.jpg">
+
+  <!-- Haute Couture Typography -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <!-- Tailwind CSS & Custom Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#141312",
+            "surface-dim": "#141312",
+            "surface-bright": "#3b3937",
+            "surface-container-lowest": "#0f0e0d",
+            "surface-container-low": "#1d1b1a",
+            "surface-container": "#211f1e",
+            "surface-container-high": "#2b2a28",
+            "surface-container-highest": "#363433",
+            "on-surface": "#e6e1df",
+            "on-surface-variant": "#ccc6bb",
+            "outline": "#959086",
+            "outline-variant": "#4a463e",
+            "primary": "#ffffff",
+            "on-primary": "#343024",
+            "secondary": "#ecbf84",
+            "on-secondary": "#452b00",
+            "secondary-container": "#624313",
+            "on-secondary-container": "#ddb177",
+            "background": "#141312",
+            "on-background": "#e6e1df"
+          },
+          fontFamily: {
+            "headline-lg": ["Playfair Display", "serif"],
+            "headline-md": ["Playfair Display", "serif"],
+            "display-lg": ["Playfair Display", "serif"],
+            "title-lg": ["Playfair Display", "serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Custom Stylesheet for Transitions & White Mode -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary selection:text-on-secondary min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- Top Fixed Haute Couture Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Monogram -->
+      <a href="index.html" class="flex flex-col flex-shrink-0 group py-1" aria-label="JUNU Atelier Home">
+        <span class="font-headline-lg text-2xl sm:text-3xl tracking-[0.2em] text-primary group-hover:text-secondary transition-colors duration-200 uppercase font-medium">
+          JUNU
+        </span>
+        <span class="font-label-sm text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-secondary font-semibold -mt-1 group-hover:text-primary transition-colors">
+          ROSELYN MAGAR
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden xl:flex items-center space-x-6 2xl:space-x-8 text-[11px] font-label-md uppercase tracking-[0.16em] flex-shrink-0">
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="collections.html">Collections</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="statements.html">Statements</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="bespoke.html">Bespoke</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="chronicles.html">Chronicles</a>
+        <a class="text-on-surface-variant hover:text-secondary font-normal transition-colors duration-200 py-1" href="about.html">Maison</a>
+      </nav>
+
+      <!-- Right Utilities Bar -->
+      <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+        
+        <!-- White/Dark Mode Toggle -->
+        <button id="theme-toggle-btn" class="w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary flex items-center justify-center text-primary transition-all duration-200" onclick="toggleTheme()" type="button" title="Toggle White Mode / Nocturne Mode" aria-label="Toggle White Mode">
+          <span class="material-symbols-outlined text-[17px] text-secondary" id="theme-icon">light_mode</span>
+        </button>
+
+        <!-- Currency Selector (Hidden on Mobile < 640px) -->
+        <div class="relative hidden sm:block">
+          <select id="currency-picker" onchange="setCurrency(this.value)" class="bg-surface-container border border-outline-variant/40 rounded-none px-2 py-1.5 font-label-sm text-[11px] uppercase text-primary focus:outline-none focus:border-secondary cursor-pointer tracking-wider">
+            <option value="NPR">NPR</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+        </div>
+
+        <!-- Wishlist Drawer Trigger (Hidden on Mobile < 640px) -->
+        <button onclick="openWishlistDrawer()" class="relative hidden sm:flex w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary items-center justify-center text-primary transition-all duration-200" aria-label="View Archival Wishlist" title="Archival Wishlist">
+          <span class="material-symbols-outlined text-[18px]">favorite</span>
+          <span id="wishlist-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Shopping Bag Trigger -->
+        <button onclick="openCartDrawer()" class="relative w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary flex items-center justify-center text-primary transition-all duration-200" aria-label="View Salon Bag" title="Salon Shopping Bag">
+          <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          <span id="cart-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Checkout Quick Link -->
+        <a href="checkout.html" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary font-label-sm text-[11px] uppercase tracking-wider font-semibold transition-colors duration-200 shadow-sm">
+          <span>Checkout</span>
+        </a>
+
+        <!-- Instagram Profile Link -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="hidden 2xl:inline-flex items-center space-x-1 px-2.5 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-secondary hover:border-secondary font-label-sm text-[10px] uppercase tracking-wider transition-colors" title="Instagram @junu.clo">
+          <span>@junu.clo</span>
+        </a>
+
+        <!-- Mobile / Tablet Hamburger Button -->
+        <button onclick="openMobileNavDrawer()" class="xl:hidden w-9 h-9 flex items-center justify-center text-primary hover:text-secondary border border-outline-variant/40 bg-surface-container rounded-sm transition-colors" aria-label="Open Navigation Menu">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    
+    <!-- Hero Section (Editorial Gateway Blueprint) -->
+    <section id="hero" class="relative w-full overflow-hidden bg-surface-container-lowest min-h-[calc(100vh-5rem)] flex flex-col justify-between">
+      
+      <!-- Hero Background Editorial Imagery (Adaptive Light/Dark Couture Backdrops) -->
+      <div class="absolute inset-0 z-0">
+        <!-- Dark Mode Hero: Model in Black Gown -->
+        <img class="hero-img-dark w-full h-full object-cover object-[center_top] sm:object-center scale-100 sm:scale-105 transition-transform duration-1000 ease-out brightness-[0.74] contrast-[1.08]" 
+             src="assets/images/Model_in_black_gown_standing_2K_20261020205729.jpg" 
+             alt="JUNU Atelier Haute Couture • Model in Black Gown">
+        
+        <!-- Light Mode Hero: Model in White Gown (hero_white.jpg) -->
+        <img class="hero-img-light w-full h-full object-cover object-[center_top] sm:object-center scale-100 sm:scale-105 transition-transform duration-1000 ease-out brightness-[0.98] contrast-[1.02]" 
+             src="assets/images/hero_white.jpg" 
+             alt="JUNU Atelier Haute Couture • Model in White Gown">
+
+        <!-- Multi-stage Scrim Gradients for Dark Mode -->
+        <div class="hero-scrim-dark absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-black/60 pointer-events-none"></div>
+        <div class="hero-scrim-dark absolute inset-0 bg-gradient-to-r from-surface via-surface/30 to-transparent pointer-events-none"></div>
+
+        <!-- Multi-stage Scrim Gradients for Light Mode -->
+        <div class="hero-scrim-light absolute inset-0 pointer-events-none"></div>
+      </div>
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-8 sm:pt-14 sm:pb-12 flex-1 flex flex-col justify-center">
+        <div class="max-w-3xl flex flex-col space-y-5 sm:space-y-6">
+          
+          <!-- Atelier Metadata Badge -->
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="inline-flex items-center space-x-2 bg-surface-container-high/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-secondary/40 text-secondary font-label-sm text-xs uppercase tracking-[0.2em] font-semibold">
+              <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              <span>Salon Nocturne • Vol. IV • 23 Numbered Pieces</span>
+            </span>
+            <span class="text-on-surface-variant font-label-sm text-xs uppercase tracking-[0.18em] hidden sm:inline">
+              Autumn / Winter Atelier • Kathmandu
+            </span>
+          </div>
+
+          <!-- Grand Headline -->
+          <h1 class="font-headline-lg text-4xl sm:text-6xl lg:text-7xl text-primary font-normal leading-[1.05] tracking-tight">
+            Soft. Bold.<br>
+            <span class="italic font-serif text-secondary font-light">Unapologetic.</span>
+          </h1>
+
+          <!-- Narrative -->
+          <p class="font-body-md text-base sm:text-lg text-on-surface-variant font-light max-w-2xl leading-relaxed">
+            An intimate study of anatomical steel corsetry, sculptural liquid lamé, and hand-embroidered artisanal silhouettes crafted in restricted numbered batches.
+          </p>
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2 sm:pt-4">
+            <a href="#statements-section" class="inline-flex items-center justify-center space-x-3 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary px-8 py-4 font-label-md text-xs uppercase tracking-[0.22em] font-semibold transition-all shadow-xl">
+              <span>Explore Statement Creations</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+            </a>
+            <a href="#atelier-method" class="inline-flex items-center justify-center space-x-2 bg-surface-container/80 backdrop-blur-md border border-outline-variant/50 hover:border-secondary text-primary hover:text-secondary px-6 py-4 font-label-md text-xs uppercase tracking-[0.18em] font-medium transition-all">
+              <span>The Atelier Method</span>
+            </a>
+          </div>
+
+          <!-- Subtle Animated Scroll Indicator -->
+          <div class="pt-6 flex items-center space-x-3 text-outline/80 text-xs font-label-sm uppercase tracking-[0.25em] animate-junu-float">
+            <span class="w-4 h-7 rounded-full border border-secondary/50 flex items-start justify-center p-1">
+              <span class="w-1 h-2 bg-secondary rounded-full animate-bounce"></span>
+            </span>
+            <span class="text-[10px] text-on-surface-variant/80 tracking-widest">Scroll to Explore Monograph</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Atelier Philosophy Hallmarks Base Bar (Anchored at the base of the landing page) -->
+      <div class="relative z-10 w-full bg-surface-container-lowest/85 backdrop-blur-md border-t border-outline-variant/30 py-4 sm:py-5 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-label-sm uppercase tracking-[0.2em] text-outline">
+          <div class="flex items-center space-x-2 text-primary/90 hover:text-secondary transition-colors">
+            <span class="text-secondary text-sm">✦</span>
+            <span class="font-medium">Numbered Couturier Batches</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary/90 hover:text-secondary transition-colors">
+            <span class="text-secondary text-sm">✦</span>
+            <span class="font-medium">18–24 Hrs Hand Bespoke Tailoring</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary/90 hover:text-secondary transition-colors">
+            <span class="text-secondary text-sm">✦</span>
+            <span class="font-medium">100% French Coutil & Spiral Steel</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         SECTION: ARCHIVAL STATEMENT CREATIONS (4 HERO SILHOUETTES)
+         ========================================================================= -->
+    <section id="statements-section" class="relative w-full max-w-7xl mx-auto px-6 lg:px-12 py-20">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-outline-variant/20 pb-8 junu-reveal">
+        <div>
+          <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+            <span>CURATED STATEMENTS</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>4 HERO SILHOUETTES</span>
+          </div>
+          <h2 class="font-headline-lg text-3xl sm:text-5xl text-primary font-normal mt-2 leading-tight">
+            Archival Statement Creations
+          </h2>
+          <p class="font-body-md text-sm sm:text-base text-on-surface-variant font-light max-w-xl mt-3 leading-relaxed">
+            The four iconic centerpieces of Salon Nocturne. Engineered with molded brass armatures, pure duchesse silks, and hand-embroidered velvet.
+          </p>
+        </div>
+
+        <a href="statements.html" class="inline-flex items-center space-x-2 text-secondary hover:text-primary font-label-md text-xs uppercase tracking-[0.2em] font-semibold border-b border-secondary/40 pb-1 self-start md:self-end transition-colors group">
+          <span>View All Statement Creations</span>
+          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- Spotlight 4-Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Statement 1: Ivory Angel Winged Silk Gown (junu-02) -->
+        <article class="junu-reveal junu-stagger-1 group flex flex-col bg-surface-container-low border border-outline-variant/25 transition-all duration-500 hover:border-secondary/60 hover:shadow-[0_15px_35px_-10px_rgba(202,160,82,0.22)] hover:-translate-y-1 relative overflow-hidden" data-id="junu-02">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-container-lowest">
+            <a href="product.html?id=junu-02" class="w-full h-full block overflow-hidden" aria-label="Inspect Ivory Angel Winged Silk Gown">
+              <img class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" 
+                   src="assets/images/angel_wings_gown_2k.jpg" 
+                   alt="Ivory Angel Winged Silk Gown" 
+                   loading="lazy">
+            </a>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-75 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
+            
+            <!-- Badges -->
+            <div class="absolute top-3.5 left-3.5 flex flex-col space-y-1.5 pointer-events-none z-10">
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.2em] text-secondary font-semibold border border-secondary/35 shadow-sm">
+                Runway Gown • Ltd 6
+              </span>
+              <span class="bg-surface-container-high/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.16em] text-primary flex items-center shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1.5"></span>
+                Only 2 Left
+              </span>
+            </div>
+
+            <!-- Wishlist Button -->
+            <button onclick="toggleWishlist('junu-02', this)" aria-label="Add to wishlist" class="absolute top-3.5 right-3.5 w-9 h-9 bg-surface-container-lowest/80 backdrop-blur-md rounded-full flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-container-lowest transition-colors z-10 shadow-md" type="button">
+              <span class="material-symbols-outlined text-[18px]">favorite</span>
+            </button>
+          </div>
+
+          <div class="p-5 flex flex-col space-y-3 flex-1 justify-between">
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-label-sm uppercase tracking-widest text-secondary font-semibold">Silk Dresses & Gowns</span>
+                <span class="font-body-sm text-on-surface-variant font-light truncate max-w-[130px]">Pure Silk & Feather Wings</span>
+              </div>
+              <a href="product.html?id=junu-02" class="block">
+                <h3 class="font-title-lg text-base text-primary tracking-tight group-hover:text-secondary transition-colors cursor-pointer leading-snug">
+                  Ivory Angel Winged Silk Gown
+                </h3>
+              </a>
+              <p class="font-body-md text-xs text-on-surface-variant font-light line-clamp-2 leading-relaxed">
+                Showstopping floor-length pure silk evening gown with detachable handcrafted feather angel wings and a stunning lace-up back.
+              </p>
+            </div>
+            <div class="pt-3 flex items-center justify-between border-t border-outline-variant/30">
+              <span class="font-headline-md text-sm sm:text-base text-primary font-semibold" data-price-npr="82000">Rs. 82,000</span>
+              <a href="product.html?id=junu-02" class="font-label-sm text-[11px] text-secondary uppercase tracking-wider flex items-center space-x-1 font-semibold group-hover:translate-x-0.5 transition-transform hover:underline">
+                <span>Inspect Piece</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Statement 2: Boho Plunge Draped Silk Gown (junu-16) -->
+        <article class="junu-reveal junu-stagger-2 group flex flex-col bg-surface-container-low border border-outline-variant/25 transition-all duration-500 hover:border-secondary/60 hover:shadow-[0_15px_35px_-10px_rgba(202,160,82,0.22)] hover:-translate-y-1 relative overflow-hidden" data-id="junu-16">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-container-lowest">
+            <a href="product.html?id=junu-16" class="w-full h-full block overflow-hidden" aria-label="Inspect Boho Plunge Silk Gown">
+              <img class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" 
+                   src="assets/images/boho_plunge.jpg" 
+                   alt="Boho Plunge Draped Silk Gown" 
+                   loading="lazy">
+            </a>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-75 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
+            
+            <!-- Badges -->
+            <div class="absolute top-3.5 left-3.5 flex flex-col space-y-1.5 pointer-events-none z-10">
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.2em] text-secondary font-semibold border border-secondary/35 shadow-sm">
+                Goddess Gown • Ltd 8
+              </span>
+              <span class="bg-surface-container-high/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.16em] text-primary flex items-center shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1.5"></span>
+                Only 3 Left
+              </span>
+            </div>
+
+            <!-- Wishlist Button -->
+            <button onclick="toggleWishlist('junu-16', this)" aria-label="Add to wishlist" class="absolute top-3.5 right-3.5 w-9 h-9 bg-surface-container-lowest/80 backdrop-blur-md rounded-full flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-container-lowest transition-colors z-10 shadow-md" type="button">
+              <span class="material-symbols-outlined text-[18px]">favorite</span>
+            </button>
+          </div>
+
+          <div class="p-5 flex flex-col space-y-3 flex-1 justify-between">
+            <div class="space-y-1.5">
+              <span class="font-label-sm text-[10px] uppercase tracking-widest text-secondary font-semibold">Silk Dresses & Gowns</span>
+              <a href="product.html?id=junu-16" class="block">
+                <h3 class="font-title-lg text-base text-primary tracking-tight group-hover:text-secondary transition-colors cursor-pointer leading-snug">
+                  Boho Plunge Draped Silk Gown
+                </h3>
+              </a>
+              <p class="font-body-md text-xs text-on-surface-variant font-light line-clamp-2 leading-relaxed">
+                Deep-V plunge bohemian silk chiffon gown engineered with internal corsetry spiral steel stays and cascading ethereal draping.
+              </p>
+            </div>
+            <div class="pt-3 flex items-center justify-between border-t border-outline-variant/30">
+              <span class="font-headline-md text-sm sm:text-base text-primary font-semibold" data-price-npr="64000">Rs. 64,000</span>
+              <a href="product.html?id=junu-16" class="font-label-sm text-[11px] text-secondary uppercase tracking-wider flex items-center space-x-1 font-semibold group-hover:translate-x-0.5 transition-transform hover:underline">
+                <span>Inspect Piece</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Statement 3: Blanche Cowl Liquid Silk Dress (junu-17) -->
+        <article class="junu-reveal junu-stagger-3 group flex flex-col bg-surface-container-low border border-outline-variant/25 transition-all duration-500 hover:border-secondary/60 hover:shadow-[0_15px_35px_-10px_rgba(202,160,82,0.22)] hover:-translate-y-1 relative overflow-hidden" data-id="junu-17">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-container-lowest">
+            <a href="product.html?id=junu-17" class="w-full h-full block overflow-hidden" aria-label="Inspect Blanche Cowl Liquid Silk Dress">
+              <img class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" 
+                   src="assets/images/hero_white.jpg" 
+                   alt="Blanche Cowl Liquid Silk Dress" 
+                   loading="lazy">
+            </a>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-75 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
+            
+            <!-- Badges -->
+            <div class="absolute top-3.5 left-3.5 flex flex-col space-y-1.5 pointer-events-none z-10">
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.2em] text-secondary font-semibold border border-secondary/35 shadow-sm">
+                Atelier Gown • Ltd 10
+              </span>
+              <span class="bg-surface-container-high/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.16em] text-primary flex items-center shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1.5"></span>
+                Only 4 Left
+              </span>
+            </div>
+
+            <!-- Wishlist Button -->
+            <button onclick="toggleWishlist('junu-17', this)" aria-label="Add to wishlist" class="absolute top-3.5 right-3.5 w-9 h-9 bg-surface-container-lowest/80 backdrop-blur-md rounded-full flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-container-lowest transition-colors z-10 shadow-md" type="button">
+              <span class="material-symbols-outlined text-[18px]">favorite</span>
+            </button>
+          </div>
+
+          <div class="p-5 flex flex-col space-y-3 flex-1 justify-between">
+            <div class="space-y-1.5">
+              <span class="font-label-sm text-[10px] uppercase tracking-widest text-secondary font-semibold">Silk Dresses & Gowns</span>
+              <a href="product.html?id=junu-17" class="block">
+                <h3 class="font-title-lg text-base text-primary tracking-tight group-hover:text-secondary transition-colors cursor-pointer leading-snug">
+                  Blanche Cowl Liquid Silk Dress
+                </h3>
+              </a>
+              <p class="font-body-md text-xs text-on-surface-variant font-light line-clamp-2 leading-relaxed">
+                Sculptural ivory silk halter gown featuring a dramatic cowl back, fluid bias-cut drape, and internal boned waist support.
+              </p>
+            </div>
+            <div class="pt-3 flex items-center justify-between border-t border-outline-variant/30">
+              <span class="font-headline-md text-sm sm:text-base text-primary font-semibold" data-price-npr="58000">Rs. 58,000</span>
+              <a href="product.html?id=junu-17" class="font-label-sm text-[11px] text-secondary uppercase tracking-wider flex items-center space-x-1 font-semibold group-hover:translate-x-0.5 transition-transform hover:underline">
+                <span>Inspect Piece</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Statement 4: Monarch Papillon Gilded Headpiece (junu-13) -->
+        <article class="junu-reveal junu-stagger-4 group flex flex-col bg-surface-container-low border border-outline-variant/25 transition-all duration-500 hover:border-secondary/60 hover:shadow-[0_15px_35px_-10px_rgba(202,160,82,0.22)] hover:-translate-y-1 relative overflow-hidden" data-id="junu-13">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-container-lowest">
+            <a href="product.html?id=junu-13" class="w-full h-full block overflow-hidden" aria-label="Inspect Monarch Papillon Headpiece">
+              <img class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" 
+                   src="assets/images/butterfly_crown.jpg" 
+                   alt="Monarch Papillon Gilded Headpiece" 
+                   loading="lazy">
+            </a>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-75 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
+            
+            <!-- Badges -->
+            <div class="absolute top-3.5 left-3.5 flex flex-col space-y-1.5 pointer-events-none z-10">
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.2em] text-secondary font-semibold border border-secondary/35 shadow-sm">
+                Atelier Headpiece • Ltd 10
+              </span>
+              <span class="bg-surface-container-high/90 backdrop-blur-md px-2.5 py-1 font-label-sm text-[10px] uppercase tracking-[0.16em] text-primary flex items-center shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1.5"></span>
+                Only 4 Left
+              </span>
+            </div>
+
+            <!-- Wishlist Button -->
+            <button onclick="toggleWishlist('junu-13', this)" aria-label="Add to wishlist" class="absolute top-3.5 right-3.5 w-9 h-9 bg-surface-container-lowest/80 backdrop-blur-md rounded-full flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-container-lowest transition-colors z-10 shadow-md" type="button">
+              <span class="material-symbols-outlined text-[18px]">favorite</span>
+            </button>
+          </div>
+
+          <div class="p-5 flex flex-col space-y-3 flex-1 justify-between">
+            <div class="space-y-1.5">
+              <span class="font-label-sm text-[10px] uppercase tracking-widest text-secondary font-semibold">Shoes & Accents</span>
+              <a href="product.html?id=junu-13" class="block">
+                <h3 class="font-title-lg text-base text-primary tracking-tight group-hover:text-secondary transition-colors cursor-pointer leading-snug">
+                  Monarch Papillon Gilded Headpiece
+                </h3>
+              </a>
+              <p class="font-body-md text-xs text-on-surface-variant font-light line-clamp-2 leading-relaxed">
+                Sculptural monarch butterfly headpiece crafted from hand-hammered 24k gold-plated brass armature with iridescent silk wings.
+              </p>
+            </div>
+            <div class="pt-3 flex items-center justify-between border-t border-outline-variant/30">
+              <span class="font-headline-md text-sm sm:text-base text-primary font-semibold" data-price-npr="24000">Rs. 24,000</span>
+              <a href="product.html?id=junu-13" class="font-label-sm text-[11px] text-secondary uppercase tracking-wider flex items-center space-x-1 font-semibold group-hover:translate-x-0.5 transition-transform hover:underline">
+                <span>Inspect Piece</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION: THE ATELIER METHOD (THE ARCHITECTURE OF THE CORSET)
+         ========================================================================= -->
+    <section id="atelier-method" class="w-full bg-surface-container-low py-20 px-6 lg:px-12 border-y border-outline-variant/20 relative overflow-hidden">
+      <!-- Ambient Glow Accents -->
+      <div class="absolute -top-32 -right-32 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+        
+        <div class="lg:col-span-6 space-y-6 junu-reveal-left">
+          <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>THE ATELIER METHOD</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>HANDCRAFTED IN KATHMANDU</span>
+          </div>
+          <h2 class="font-headline-lg text-3xl sm:text-5xl lg:text-6xl text-primary font-normal leading-[1.1] tracking-tight">
+            The Architecture of the Corset
+          </h2>
+          <p class="font-body-md text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
+            Each JUNU garment originates from bespoke wooden dress-forms sculpted to human contours. We honor ancestral French couturier techniques, pairing rigorous steel support with whisper-weight silks and hand-stitched beadwork.
+          </p>
+          
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-outline-variant/20">
+            <div class="space-y-1">
+              <p class="font-headline-lg text-2xl sm:text-3xl text-secondary font-normal" data-counter="24" data-counter-prefix="18–" data-counter-suffix=" hrs">18–24 hrs</p>
+              <p class="font-label-sm text-[10px] uppercase tracking-wider text-outline font-medium">Hand Tailoring</p>
+            </div>
+            <div class="space-y-1">
+              <p class="font-headline-lg text-2xl sm:text-3xl text-secondary font-normal" data-counter="100" data-counter-suffix="%">100%</p>
+              <p class="font-label-sm text-[10px] uppercase tracking-wider text-outline font-medium">Spiral Steel</p>
+            </div>
+            <div class="space-y-1">
+              <p class="font-headline-lg text-2xl sm:text-3xl text-secondary font-normal" data-counter="18" data-counter-prefix="8–">8–18</p>
+              <p class="font-label-sm text-[10px] uppercase tracking-wider text-outline font-medium">Pieces Per Batch</p>
+            </div>
+          </div>
+
+          <div class="pt-4 flex flex-wrap gap-4">
+            <a href="bespoke.html" class="inline-flex items-center space-x-2 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary px-6 py-3.5 font-label-md text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-lg">
+              <span>Book Bespoke Video Consultation</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="bespoke.html" class="inline-flex items-center space-x-2 border border-outline-variant/60 text-primary hover:border-secondary hover:text-secondary px-6 py-3.5 font-label-md text-xs uppercase tracking-[0.2em] font-medium transition-colors">
+              <span>Bespoke Protocol Guide</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 junu-reveal-right">
+          <div class="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-surface-container border border-secondary/40 shadow-2xl group">
+            <img class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out" 
+                 src="assets/images/stitch/stitch_img_5.jpg" 
+                 alt="Kathmandu Atelier Tailoring Technique" 
+                 loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-6 sm:p-8">
+              <div class="space-y-1">
+                <span class="text-secondary font-label-sm text-xs uppercase tracking-widest font-semibold flex items-center space-x-2">
+                  <span class="w-2 h-0.5 bg-secondary"></span>
+                  <span>Digital Atelier Live</span>
+                </span>
+                <p class="text-primary font-serif text-lg sm:text-xl">Private Bespoke Consultations with Roselyn Magar</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION: COLLECTIONS (OUT OF 23 PRODUCTS, 6 SHOW INITIALLY + EXPLORE BUTTON)
+         ========================================================================= -->
+    <section id="home-collections" class="w-full bg-surface-container-lowest py-20 px-6 lg:px-12 border-t border-outline-variant/20">
+      <div class="max-w-7xl mx-auto space-y-10">
+        
+        <!-- Header & Category Filters -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-outline-variant/20 junu-reveal">
+          <div>
+            <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span>THE MONOGRAPH COLLECTION</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span>23 NUMBERED SILHOUETTES</span>
+            </div>
+            <h2 class="font-headline-lg text-3xl sm:text-5xl text-primary font-normal mt-2 leading-tight">
+              Salon Nocturne Catalog
+            </h2>
+            <p class="font-body-md text-sm sm:text-base text-on-surface-variant font-light max-w-xl mt-2 leading-relaxed">
+              Displaying 6 featured creations from our complete 23-piece archive. Filter categories below or tap explore to reveal the entire monograph.
+            </p>
+          </div>
+
+          <!-- Active Filter Pill Buttons -->
+          <div class="flex items-center space-x-3 overflow-x-auto scrollbar-none py-1">
+            <button onclick="setHomeCategory('all')" data-cat="all" class="home-cat-pill px-4 py-2 text-xs font-label-sm uppercase tracking-wider font-semibold border-b-2 border-secondary text-primary transition-colors">
+              All (23)
+            </button>
+            <button onclick="setHomeCategory('goddess')" data-cat="goddess" class="home-cat-pill px-4 py-2 text-xs font-label-sm uppercase tracking-wider font-normal border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors">
+              Goddess & Drapes (7)
+            </button>
+            <button onclick="setHomeCategory('afterdark')" data-cat="afterdark" class="home-cat-pill px-4 py-2 text-xs font-label-sm uppercase tracking-wider font-normal border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors">
+              After Dark (14)
+            </button>
+            <button onclick="setHomeCategory('accents')" data-cat="accents" class="home-cat-pill px-4 py-2 text-xs font-label-sm uppercase tracking-wider font-normal border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors">
+              Accents (2)
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 Products Grid (Dynamically rendered via app.js) -->
+        <div id="home-collections-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 transition-all duration-300">
+          <!-- Populated by renderHomeCollections() on load -->
+        </div>
+
+        <!-- Explore Actions Bar -->
+        <div class="pt-8 flex items-center justify-center text-center junu-reveal">
+          <a href="collections.html" class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-secondary text-on-secondary hover:bg-primary hover:text-on-primary px-10 py-4 font-label-md text-xs uppercase tracking-[0.22em] font-semibold transition-all shadow-xl hover:shadow-2xl">
+            <span>Explore Full Collection (All 23 Silhouettes)</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================================================================
+         SECTION: INSTAGRAM EDITORIAL FEED (@JUNU.CLO)
+         ========================================================================= -->
+    <section id="instagram-feed" class="w-full bg-surface py-20 px-6 lg:px-12 border-t border-outline-variant/20">
+      
+      <!-- Instagram Header -->
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 junu-reveal">
+        <div>
+          <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+            <svg class="w-4 h-4 fill-current text-secondary" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            <span>LIVE ATELIER FEED</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>@JUNU.CLO</span>
+          </div>
+          <h2 class="font-headline-lg text-3xl sm:text-5xl text-primary font-normal mt-2 leading-tight">
+            Follow The Atelier on Instagram
+          </h2>
+          <p class="font-body-md text-sm sm:text-base text-on-surface-variant font-light max-w-xl mt-3 leading-relaxed">
+            Behind the scenes in Kathmandu — unreleased fittings, cold brass armatures in progress, and runway looks. Connect with our atelier circle.
+          </p>
+        </div>
+
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2.5 bg-surface-container-high hover:bg-secondary text-primary hover:text-on-secondary px-6 py-3 border border-secondary/40 font-label-md text-xs uppercase tracking-[0.2em] font-semibold transition-all group shadow-md self-start md:self-end">
+          <svg class="w-4 h-4 fill-current text-secondary group-hover:text-on-secondary transition-colors" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          <span>Connect @junu.clo</span>
+          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">arrow_outward</span>
+        </a>
+      </div>
+
+      <!-- 4 Instagram Feed Cards -->
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <!-- Post 1: Emerald Papillon in Progress -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="junu-reveal junu-stagger-1 group relative aspect-square sm:aspect-[4/5] overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary/70 transition-all duration-500 block shadow-lg">
+          <img class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out" 
+               src="assets/images/stitch/stitch_img_2.jpg" 
+               alt="JUNU Instagram Post - Emerald Butterfly Heels" 
+               loading="lazy">
+          
+          <!-- Static Corner Badges -->
+          <div class="absolute top-3 left-3 z-10 pointer-events-none">
+            <span class="bg-black/65 backdrop-blur-md px-2 py-0.5 text-[9px] font-label-sm uppercase tracking-wider text-white/90 flex items-center space-x-1 border border-white/10">
+              <svg class="w-2.5 h-2.5 fill-current text-secondary" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>junu.clo</span>
+            </span>
+          </div>
+          <div class="absolute top-3 right-3 z-10 pointer-events-none">
+            <span class="w-6 h-6 rounded bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 border border-white/10">
+              <span class="material-symbols-outlined text-[14px]">photo_camera</span>
+            </span>
+          </div>
+
+          <!-- Frosted Instagram Hover Overlay -->
+          <div class="absolute inset-0 bg-black/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 sm:p-5 flex flex-col justify-between text-left">
+            <div class="flex items-center justify-between text-xs text-white/90">
+              <span class="font-semibold text-secondary flex items-center space-x-1">
+                <span>@junu.clo</span>
+              </span>
+              <span class="text-[10px] uppercase tracking-wider text-outline">Post</span>
+            </div>
+            
+            <div class="space-y-2 my-auto">
+              <div class="flex items-center space-x-4 text-white text-xs font-semibold">
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-red-400 text-[16px]">favorite</span>
+                  <span>1,620</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-white/80 text-[16px]">mode_comment</span>
+                  <span>94</span>
+                </span>
+              </div>
+              <p class="text-white/85 text-[11px] font-light leading-relaxed line-clamp-3">
+                "The 3D silk emerald butterfly wings sculpted for our 105mm stiletto edition. Hand-placed iridescent beads."
+              </p>
+            </div>
+
+            <span class="inline-flex items-center space-x-1 text-secondary text-[10px] uppercase tracking-widest font-semibold border-b border-secondary/50 pb-0.5">
+              <span>View on Instagram</span>
+              <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Post 2: Vintage Betty Rouge Dress -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="junu-reveal junu-stagger-2 group relative aspect-square sm:aspect-[4/5] overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary/70 transition-all duration-500 block shadow-lg">
+          <img class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out" 
+               src="assets/images/stitch/stitch_img_4.jpg" 
+               alt="JUNU Instagram Post - Betty Rouge Corset Dress" 
+               loading="lazy">
+          
+          <!-- Static Corner Badges -->
+          <div class="absolute top-3 left-3 z-10 pointer-events-none">
+            <span class="bg-black/65 backdrop-blur-md px-2 py-0.5 text-[9px] font-label-sm uppercase tracking-wider text-white/90 flex items-center space-x-1 border border-white/10">
+              <svg class="w-2.5 h-2.5 fill-current text-secondary" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>junu.clo</span>
+            </span>
+          </div>
+          <div class="absolute top-3 right-3 z-10 pointer-events-none">
+            <span class="w-6 h-6 rounded bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 border border-white/10">
+              <span class="material-symbols-outlined text-[14px]">filter_none</span>
+            </span>
+          </div>
+
+          <!-- Frosted Instagram Hover Overlay -->
+          <div class="absolute inset-0 bg-black/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 sm:p-5 flex flex-col justify-between text-left">
+            <div class="flex items-center justify-between text-xs text-white/90">
+              <span class="font-semibold text-secondary flex items-center space-x-1">
+                <span>@junu.clo</span>
+              </span>
+              <span class="text-[10px] uppercase tracking-wider text-outline">Reel</span>
+            </div>
+            
+            <div class="space-y-2 my-auto">
+              <div class="flex items-center space-x-4 text-white text-xs font-semibold">
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-red-400 text-[16px]">favorite</span>
+                  <span>2,140</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-white/80 text-[16px]">mode_comment</span>
+                  <span>128</span>
+                </span>
+              </div>
+              <p class="text-white/85 text-[11px] font-light leading-relaxed line-clamp-3">
+                "1950s pin-up nostalgia engineered with steel boning channels and vintage red rose motifs. #SalonNocturne"
+              </p>
+            </div>
+
+            <span class="inline-flex items-center space-x-1 text-secondary text-[10px] uppercase tracking-widest font-semibold border-b border-secondary/50 pb-0.5">
+              <span>View on Instagram</span>
+              <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Post 3: Atelier Handcrafting & Draping -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="junu-reveal junu-stagger-3 group relative aspect-square sm:aspect-[4/5] overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary/70 transition-all duration-500 block shadow-lg">
+          <img class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out" 
+               src="assets/images/stitch/stitch_img_7.jpg" 
+               alt="JUNU Instagram Post - Hand-Draping in Studio" 
+               loading="lazy">
+          
+          <!-- Static Corner Badges -->
+          <div class="absolute top-3 left-3 z-10 pointer-events-none">
+            <span class="bg-black/65 backdrop-blur-md px-2 py-0.5 text-[9px] font-label-sm uppercase tracking-wider text-white/90 flex items-center space-x-1 border border-white/10">
+              <svg class="w-2.5 h-2.5 fill-current text-secondary" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>junu.clo</span>
+            </span>
+          </div>
+          <div class="absolute top-3 right-3 z-10 pointer-events-none">
+            <span class="w-6 h-6 rounded bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 border border-white/10">
+              <span class="material-symbols-outlined text-[14px]">videocam</span>
+            </span>
+          </div>
+
+          <!-- Frosted Instagram Hover Overlay -->
+          <div class="absolute inset-0 bg-black/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 sm:p-5 flex flex-col justify-between text-left">
+            <div class="flex items-center justify-between text-xs text-white/90">
+              <span class="font-semibold text-secondary flex items-center space-x-1">
+                <span>@junu.clo</span>
+              </span>
+              <span class="text-[10px] uppercase tracking-wider text-outline">Atelier Reel</span>
+            </div>
+            
+            <div class="space-y-2 my-auto">
+              <div class="flex items-center space-x-4 text-white text-xs font-semibold">
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-red-400 text-[16px]">favorite</span>
+                  <span>3,450</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-white/80 text-[16px]">mode_comment</span>
+                  <span>210</span>
+                </span>
+              </div>
+              <p class="text-white/85 text-[11px] font-light leading-relaxed line-clamp-3">
+                "Direct from the sewing table: hand-draping 24 meters of liquid lamé silk on the mannequin. #RoselynMagar"
+              </p>
+            </div>
+
+            <span class="inline-flex items-center space-x-1 text-secondary text-[10px] uppercase tracking-widest font-semibold border-b border-secondary/50 pb-0.5">
+              <span>View on Instagram</span>
+              <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Post 4: Runway Lookbook -->
+        <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="junu-reveal junu-stagger-4 group relative aspect-square sm:aspect-[4/5] overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary/70 transition-all duration-500 block shadow-lg">
+          <img class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out" 
+               src="assets/images/stitch/stitch_img_8.jpg" 
+               alt="JUNU Instagram Post - Editorial Runway" 
+               loading="lazy">
+          
+          <!-- Static Corner Badges -->
+          <div class="absolute top-3 left-3 z-10 pointer-events-none">
+            <span class="bg-black/65 backdrop-blur-md px-2 py-0.5 text-[9px] font-label-sm uppercase tracking-wider text-white/90 flex items-center space-x-1 border border-white/10">
+              <svg class="w-2.5 h-2.5 fill-current text-secondary" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>junu.clo</span>
+            </span>
+          </div>
+          <div class="absolute top-3 right-3 z-10 pointer-events-none">
+            <span class="w-6 h-6 rounded bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 border border-white/10">
+              <span class="material-symbols-outlined text-[14px]">photo_camera</span>
+            </span>
+          </div>
+
+          <!-- Frosted Instagram Hover Overlay -->
+          <div class="absolute inset-0 bg-black/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 sm:p-5 flex flex-col justify-between text-left">
+            <div class="flex items-center justify-between text-xs text-white/90">
+              <span class="font-semibold text-secondary flex items-center space-x-1">
+                <span>@junu.clo</span>
+              </span>
+              <span class="text-[10px] uppercase tracking-wider text-outline">Editorial</span>
+            </div>
+            
+            <div class="space-y-2 my-auto">
+              <div class="flex items-center space-x-4 text-white text-xs font-semibold">
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-red-400 text-[16px]">favorite</span>
+                  <span>1,890</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                  <span class="material-symbols-outlined text-white/80 text-[16px]">mode_comment</span>
+                  <span>104</span>
+                </span>
+              </div>
+              <p class="text-white/85 text-[11px] font-light leading-relaxed line-clamp-3">
+                "Editorial runway test for the Salon Nocturne collection. Pure architectural corsetry."
+              </p>
+            </div>
+
+            <span class="inline-flex items-center space-x-1 text-secondary text-[10px] uppercase tracking-widest font-semibold border-b border-secondary/50 pb-0.5">
+              <span>View on Instagram</span>
+              <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+            </span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Live Atelier Community Ticker -->
+      <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-label-sm text-outline junu-reveal">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span class="text-primary font-medium tracking-wider">LIVE ATELIER UPDATES • KATHMANDU, NEPAL</span>
+        </div>
+        <div class="flex items-center space-x-4 sm:space-x-6 tracking-widest uppercase text-[11px]">
+          <span>Tag <strong class="text-secondary font-semibold">#HouseOfJUNU</strong> to be featured</span>
+          <span>•</span>
+          <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-primary transition-colors font-semibold flex items-center space-x-1">
+            <span>Explore Instagram Feed</span>
+            <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         SECTION: PACKAGING & UNBOXING (HAUTE COUTURE PRESENTATION RITUAL)
+         ========================================================================= -->
+    <section id="packaging-section" class="w-full bg-surface-container-low py-20 px-6 lg:px-12 border-t border-outline-variant/20 relative overflow-hidden">
+      <!-- Ambient Glow -->
+      <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto space-y-16 relative z-10">
+        
+        <!-- Header -->
+        <div class="max-w-3xl space-y-3 junu-reveal">
+          <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>THE ATELIER PACKAGING RITUAL</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>HEIRLOOM UNBOXING</span>
+          </div>
+          <h2 class="font-headline-lg text-3xl sm:text-5xl lg:text-6xl text-primary font-normal leading-[1.1] tracking-tight">
+            The Art of Unboxing
+          </h2>
+          <p class="font-body-md text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
+            Every numbered creation is an intimate investment in personal power. Our packaging is deliberately engineered to protect internal steel armatures and delicate silks while delivering an unforgettable sensory unboxing experience.
+          </p>
+        </div>
+
+        <!-- Packaging Showcase: Side-by-Side Image + Ritual Steps -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          
+          <!-- Left Column: Packaging Unboxing Photograph -->
+          <div class="lg:col-span-6 junu-reveal-left">
+            <div class="relative group cursor-pointer overflow-hidden bg-surface-container border border-secondary/40 shadow-2xl transition-all duration-500 hover:border-secondary" onclick="openPackagingModal()">
+              <div class="aspect-[4/3] sm:aspect-[16/11] overflow-hidden">
+                <img class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     src="assets/images/packaging_unboxing.jpg" 
+                     alt="JUNU Official Haute Couture Unboxing Box with Wax Seal" 
+                     loading="lazy">
+              </div>
+
+              <!-- Floating Badges -->
+              <div class="absolute top-4 left-4 z-10">
+                <span class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 font-label-sm text-[10px] uppercase tracking-[0.22em] text-secondary font-semibold border border-secondary/40 shadow-lg">
+                  Atelier Keepsake Box • 100% Archival
+                </span>
+              </div>
+
+              <!-- Zoom Indicator Badge -->
+              <div class="absolute bottom-4 right-4 z-10 bg-surface-container-high/90 backdrop-blur-md px-3 py-1.5 text-primary text-xs font-label-sm uppercase tracking-wider flex items-center space-x-1 border border-outline-variant/40 group-hover:border-secondary group-hover:text-secondary transition-colors">
+                <span class="material-symbols-outlined text-[16px]">zoom_in</span>
+                <span>Enlarge View</span>
+              </div>
+
+              <!-- Scrim Overlay on Hover -->
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            </div>
+            <p class="text-xs text-outline font-label-sm tracking-wider uppercase mt-3 text-center sm:text-left">
+              * Tap image to inspect official wax-sealed keepsake presentation
+            </p>
+          </div>
+
+          <!-- Right Column: 3-Step Unboxing Sequence (Refined & Balanced) -->
+          <div class="lg:col-span-6 space-y-6 junu-reveal-right">
+            
+            <!-- Step 1 -->
+            <div class="junu-reveal junu-stagger-1 p-6 bg-surface-container border border-outline-variant/30 flex items-start space-x-5 hover:border-secondary/60 transition-all duration-300 shadow-sm">
+              <span class="w-10 h-10 rounded-full bg-surface-container-high border border-secondary/40 text-secondary font-headline-md text-sm font-semibold flex items-center justify-center flex-shrink-0 mt-0.5">
+                01
+              </span>
+              <div class="space-y-1.5">
+                <h4 class="font-title-lg text-base text-primary font-normal leading-snug">
+                  Rigid Matte-Noir Keepsake Box & Archival Tissue
+                </h4>
+                <p class="font-body-md text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed">
+                  Housed in a custom heavy-gauge collector’s chest with gold-embossed typography, delicately wrapped in acid-free archival tissue to preserve internal steel boning curves and protect pure silks.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="junu-reveal junu-stagger-2 p-6 bg-surface-container border border-outline-variant/30 flex items-start space-x-5 hover:border-secondary/60 transition-all duration-300 shadow-sm">
+              <span class="w-10 h-10 rounded-full bg-surface-container-high border border-secondary/40 text-secondary font-headline-md text-sm font-semibold flex items-center justify-center flex-shrink-0 mt-0.5">
+                02
+              </span>
+              <div class="space-y-1.5">
+                <h4 class="font-title-lg text-base text-primary font-normal leading-snug">
+                  Hand-Pressed Antique Gold Wax Seal
+                </h4>
+                <p class="font-body-md text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed">
+                  Every wrapped silhouette is hand-sealed in our atelier with proprietary molten gold sealing wax bearing the official House of JUNU monogram crest.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="junu-reveal junu-stagger-3 p-6 bg-surface-container border border-outline-variant/30 flex items-start space-x-5 hover:border-secondary/60 transition-all duration-300 shadow-sm">
+              <span class="w-10 h-10 rounded-full bg-surface-container-high border border-secondary/40 text-secondary font-headline-md text-sm font-semibold flex items-center justify-center flex-shrink-0 mt-0.5">
+                03
+              </span>
+              <div class="space-y-1.5">
+                <h4 class="font-title-lg text-base text-primary font-normal leading-snug">
+                  Numbered Certificate of Authenticity & Satin Ribbons
+                </h4>
+                <p class="font-body-md text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed">
+                  Includes a heavy cotton certificate card inscribed with your silhouette’s unique edition number, signed by Roselyn Magar, and tied with double-faced emerald grosgrain satin ribbon.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Packaging Guarantees Bar -->
+        <div class="junu-reveal p-6 sm:p-8 bg-surface-container border border-outline-variant/30 flex flex-wrap items-center justify-around gap-6 text-xs font-label-sm uppercase tracking-[0.18em] text-outline">
+          <div class="flex items-center space-x-2 text-primary">
+            <span class="text-secondary text-base">✦</span>
+            <span>100% Insured Worldwide Delivery (DHL Express)</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary">
+            <span class="text-secondary text-base">✦</span>
+            <span>Complimentary Luxury Gift Box on All Orders</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary">
+            <span class="text-secondary text-base">✦</span>
+            <span>Permanent Wardrobe Keepsake Storage</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       HAUTE COUTURE FOOTER (PREMIUM ONLINE ATELIER & WORLDWIDE DISPATCH)
+       ========================================================================= -->
+  <footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 text-on-surface-variant font-body-md text-xs">
+    
+    <!-- VIP Salon Nocturne Private Access Bar -->
+    <div class="border-b border-outline-variant/20 bg-surface-container-low/70 py-12 px-6 lg:px-12 junu-reveal">
+      <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="space-y-2 max-w-xl">
+          <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+            <span>SALON NOCTURNE PRIVILEGE</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>CONFIDENTIAL DISPATCH</span>
+          </div>
+          <h3 class="font-headline-md text-2xl sm:text-3xl text-primary font-normal">
+            Request Private Atelier Access
+          </h3>
+          <p class="font-body-md text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed">
+            Receive confidential monograph release invitations, private fittings access, and numbered drop notices directly to your inbox.
+          </p>
+        </div>
+        <form onsubmit="event.preventDefault(); showToast('VIP invitation requested. Our atelier desk will contact you shortly.'); this.reset();" class="flex flex-col sm:flex-row items-stretch gap-3 w-full lg:max-w-md">
+          <input type="email" required placeholder="Enter your private email address..." class="bg-surface-container-high border border-outline-variant/40 focus:border-secondary px-4 py-3.5 text-xs text-primary placeholder:text-outline font-body-md tracking-wider flex-1 focus:outline-none transition-colors">
+          <button type="submit" class="bg-secondary text-on-secondary hover:bg-primary hover:text-on-primary px-7 py-3.5 font-label-md text-xs uppercase tracking-[0.2em] font-semibold transition-all whitespace-nowrap shadow-lg">
+            Request Access
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Footer 4-Column Grid -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-14 border-b border-outline-variant/20 junu-reveal">
+      
+      <!-- Column 1: Maison Identity & Concierge -->
+      <div class="lg:col-span-4 space-y-4">
+        <div>
+          <span class="font-headline-lg text-2xl sm:text-3xl tracking-[0.22em] text-primary uppercase font-medium">JUNU</span>
+          <p class="font-label-sm text-[9px] uppercase tracking-[0.28em] text-secondary font-semibold mt-1">
+            ROSELYN MAGAR • ONLINE HAUTE COUTURE ATELIER
+          </p>
+        </div>
+        <p class="text-on-surface-variant text-xs leading-relaxed max-w-sm font-light">
+          Bespoke Made-to-Order Couturier specialized in architectural corsetry, hand-formed spiral steel armatures, and hand-draped liquid silks. Handcrafted with reverence in Kathmandu, Nepal, and dispatched worldwide.
+        </p>
+        
+        <!-- Connected Atelier Channels -->
+        <div class="pt-2 flex flex-col space-y-2 text-xs">
+          <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-primary transition-colors flex items-center space-x-2 font-medium">
+            <svg class="w-4 h-4 fill-current text-secondary" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <span>@junu.clo on Instagram</span>
+          </a>
+          <a href="https://wa.me/9779800000000" target="_blank" rel="noopener noreferrer" class="text-on-surface-variant hover:text-secondary transition-colors flex items-center space-x-2">
+            <span class="material-symbols-outlined text-[16px] text-emerald-400">chat</span>
+            <span>WhatsApp Private Concierge Desk</span>
+          </a>
+          <a href="mailto:concierge@junuatelier.com" class="text-on-surface-variant hover:text-secondary transition-colors flex items-center space-x-2">
+            <span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+            <span>concierge@junuatelier.com</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Column 2: Numbered Collections -->
+      <div class="lg:col-span-2 space-y-3">
+        <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">Collections</h4>
+        <ul class="space-y-2 text-on-surface-variant">
+          <li><a href="collections.html" class="hover:text-secondary transition-colors">Monograph (23 Pieces)</a></li>
+          <li><a href="collections.html?cat=goddess" class="hover:text-secondary transition-colors">Goddess & Liquid Drapes</a></li>
+          <li><a href="collections.html?cat=afterdark" class="hover:text-secondary transition-colors">After Dark Armor</a></li>
+          <li><a href="collections.html?cat=accents" class="hover:text-secondary transition-colors">Footwear & Accents</a></li>
+          <li class="pt-1"><a href="statements.html" class="text-secondary font-semibold hover:underline">Archival Statements →</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: The Atelier & Craft -->
+      <div class="lg:col-span-3 space-y-3">
+        <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">The Atelier</h4>
+        <ul class="space-y-2 text-on-surface-variant">
+          <li><a href="about.html#structural-engineering" class="hover:text-secondary transition-colors">The Atelier Method & Boning</a></li>
+          <li><a href="bespoke.html" class="hover:text-secondary transition-colors">1-on-1 Virtual Video Fitting</a></li>
+          <li><a href="bespoke.html" class="hover:text-secondary transition-colors">Custom Measurement Codex</a></li>
+          <li><a href="#packaging-section" class="hover:text-secondary transition-colors">Heirloom Unboxing Ritual</a></li>
+          <li><a href="about.html" class="hover:text-secondary transition-colors">About Roselyn Magar</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Online Bespoke Concierge (Online Only) -->
+      <div class="lg:col-span-3 space-y-3">
+        <h4 class="font-label-md text-xs uppercase tracking-[0.2em] text-primary font-semibold">Atelier Concierge</h4>
+        
+        <!-- Online Status Indicator -->
+        <div class="inline-flex items-center space-x-2 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-label-sm text-[10px] uppercase tracking-widest font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Online Atelier • Worldwide Shipping</span>
+        </div>
+
+        <ul class="space-y-2 text-on-surface-variant pt-1 font-light">
+          <li class="flex items-center space-x-1.5 text-primary">
+            <span class="text-secondary">✦</span>
+            <span>100% Insured Delivery via DHL Express</span>
+          </li>
+          <li class="flex items-center space-x-1.5">
+            <span class="text-secondary">✦</span>
+            <span>Made-to-Measure: 18-24 Hrs Handcrafting</span>
+          </li>
+          <li class="flex items-center space-x-1.5">
+            <span class="text-secondary">✦</span>
+            <span>Digital Video Consultations Worldwide</span>
+          </li>
+          <li class="pt-3">
+            <a href="checkout.html" class="inline-flex items-center space-x-1.5 text-secondary hover:text-primary font-semibold tracking-wider uppercase text-[11px] hover:underline">
+              <span>Proceed to Bag & Checkout</span>
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar: Legal, Accepted Payments, Currencies -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8 flex flex-col md:flex-row items-center justify-between text-outline text-[11px] gap-6">
+      
+      <!-- Copyright -->
+      <p>© 2026 JUNU Atelier • Roselyn Magar. All Rights Reserved.</p>
+      
+      <!-- Security & Accepted Payment Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-2 text-[10px] uppercase tracking-wider font-mono">
+        <span class="text-outline">Encrypted Checkout:</span>
+        <span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 text-on-surface">SWIFT Wire</span>
+        <span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 text-on-surface">Visa / Mastercard</span>
+        <span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 text-on-surface">eSewa</span>
+        <span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 text-on-surface">Khalti</span>
+      </div>
+
+      <!-- Tagline -->
+      <div class="flex items-center space-x-3 text-secondary font-label-sm text-[10px] uppercase tracking-[0.2em] font-semibold">
+        <span>ONLINE HAUTE COUTURE ATELIER • DISPATCHED WORLDWIDE</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Standardized Mobile Navigation Drawer -->
+  <div id="mobile-nav-backdrop" onclick="closeMobileNavDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  <aside id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-surface-container-low border-r border-outline-variant/30 z-50 -translate-x-full transition-transform duration-300 flex flex-col p-6 shadow-2xl h-full max-h-screen">
+    <div class="flex items-center justify-between pb-6 border-b border-outline-variant/20 flex-shrink-0">
+      <div class="flex flex-col">
+        <span class="font-headline-lg text-xl tracking-[0.2em] text-primary uppercase">JUNU</span>
+        <span class="font-label-sm text-[8px] tracking-[0.28em] uppercase text-secondary font-semibold">ROSELYN MAGAR</span>
+      </div>
+      <button onclick="closeMobileNavDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Menu">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    
+    <nav class="flex flex-col space-y-4 font-label-md text-sm uppercase tracking-wider py-6 flex-1 overflow-y-auto">
+      <a onclick="closeMobileNavDrawer()" href="collections.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Collections</a>
+      <a onclick="closeMobileNavDrawer()" href="statements.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Statements</a>
+      <a onclick="closeMobileNavDrawer()" href="bespoke.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Bespoke Protocol</a>
+      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Atelier Craft</a>
+      <a onclick="closeMobileNavDrawer()" href="chronicles.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">Chronicles</a>
+      <a onclick="closeMobileNavDrawer()" href="about.html" class="text-on-surface-variant hover:text-secondary py-1 transition-colors">House of JUNU</a>
+      <a onclick="closeMobileNavDrawer()" href="checkout.html" class="text-secondary hover:text-primary py-1 transition-colors flex items-center justify-between font-semibold border-t border-outline-variant/20 pt-3">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          <span>Order Checkout</span>
+        </span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+      <button onclick="closeMobileNavDrawer(); openWishlistDrawer();" class="text-on-surface-variant hover:text-secondary py-1.5 transition-colors flex items-center justify-between text-left">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[18px] text-secondary">favorite</span>
+          <span>Saved Favorites</span>
+        </span>
+        <span id="mobile-wishlist-badge" class="px-2 py-0.5 bg-secondary/20 text-secondary text-xs font-mono font-bold rounded-full">0</span>
+      </button>
+    </nav>
+    
+    <div class="pt-4 border-t border-outline-variant/20 flex flex-col space-y-3 flex-shrink-0">
+      <div class="flex items-center justify-between p-2.5 bg-surface-container border border-outline-variant/30 text-xs">
+        <span class="text-outline uppercase tracking-wider font-label-sm">Currency:</span>
+        <select onchange="setCurrency(this.value); document.querySelectorAll('#currency-picker').forEach(el => el.value = this.value);" class="mobile-currency-select bg-surface border border-outline-variant/40 px-2.5 py-1 text-primary text-xs uppercase font-mono font-semibold tracking-wider focus:outline-none focus:border-secondary">
+          <option value="NPR">NPR (Rs.)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+
+      <button onclick="toggleTheme()" class="w-full py-2.5 px-3 bg-surface-container border border-outline-variant/40 text-primary text-xs uppercase tracking-wider font-semibold flex items-center justify-between hover:border-secondary transition-colors">
+        <span class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-[16px] text-secondary">contrast</span>
+          <span>Theme Mode</span>
+        </span>
+        <span class="material-symbols-outlined text-[17px] text-secondary mobile-theme-icon">light_mode</span>
+      </button>
+
+      <a href="https://instagram.com/junu.clo" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary text-xs uppercase tracking-wider font-semibold text-center flex items-center justify-center space-x-2">
+        <span class="material-symbols-outlined text-[15px]">send</span>
+        <span>Instagram @junu.clo</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Responsive Shopping Bag Drawer -->
+  <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:max-w-md bg-surface-container-low border-l border-outline-variant/30 z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl h-full max-h-screen">
+    <div class="p-4 sm:p-6 border-b border-outline-variant/20 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2">
+        <span class="material-symbols-outlined text-secondary">shopping_bag</span>
+        <h3 class="font-headline-sm text-lg text-primary font-normal">Shopping Bag</h3>
+        <span id="cart-total-count" class="font-label-sm text-xs text-on-surface-variant font-medium">(0 Pieces)</span>
+      </div>
+      <button onclick="closeCartDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Bag">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+      <!-- Injected Cart Items -->
+    </div>
+
+    <div class="p-4 sm:p-6 border-t border-outline-variant/20 bg-surface-container space-y-3 sm:space-y-4 flex-shrink-0">
+      <div class="flex items-center justify-between font-label-md">
+        <span class="text-on-surface-variant text-xs uppercase tracking-wider">Subtotal:</span>
+        <span id="cart-subtotal" class="font-headline-md text-xl text-primary font-normal">Rs. 0</span>
+      </div>
+      <p class="font-body-sm text-[11px] text-outline">
+        * All taxes and luxury gift packaging included. Easy ordering and fast support via WhatsApp or Instagram.
+      </p>
+      <a href="checkout.html" class="w-full py-3 px-6 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold text-center transition-all flex items-center justify-center space-x-2 shadow-md">
+        <span class="material-symbols-outlined text-[16px]">lock</span>
+        <span>Proceed to Checkout</span>
+      </a>
+
+      <div class="grid grid-cols-2 gap-2 sm:gap-3 pt-1">
+        <a href="collections.html" onclick="closeCartDrawer()" class="py-2.5 px-2 sm:px-3 bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] uppercase tracking-wider font-semibold text-center transition-all flex items-center justify-center space-x-1">
+          <span class="material-symbols-outlined text-[14px] text-secondary">add_shopping_cart</span>
+          <span>Add More</span>
+        </a>
+        <button onclick="checkoutViaWhatsApp()" class="py-2.5 px-2 sm:px-3 bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] uppercase tracking-wider font-semibold text-center transition-all flex items-center justify-center space-x-1">
+          <span class="material-symbols-outlined text-[14px] text-secondary">chat</span>
+          <span>WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Responsive Saved Favorites Drawer -->
+  <aside id="wishlist-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:max-w-md bg-surface-container-low border-l border-outline-variant/30 z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl h-full max-h-screen">
+    <div class="p-4 sm:p-6 border-b border-outline-variant/20 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2">
+        <span class="material-symbols-outlined text-secondary">favorite</span>
+        <h3 class="font-headline-sm text-lg text-primary font-normal">Saved Favorites</h3>
+        <span id="wishlist-total-count" class="font-label-sm text-xs text-on-surface-variant font-medium">(0 Pieces)</span>
+      </div>
+      <button onclick="closeWishlistDrawer()" class="text-outline hover:text-primary p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close Wishlist">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+      <!-- Injected Wishlist Items -->
+    </div>
+
+    <div class="p-4 sm:p-6 border-t border-outline-variant/20 bg-surface-container space-y-3 flex-shrink-0">
+      <button onclick="shareWishlistToInstagram()" class="w-full py-3.5 px-6 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary font-label-sm text-xs uppercase tracking-[0.16em] font-semibold text-center transition-all flex items-center justify-center space-x-2 shadow-md">
+        <span class="material-symbols-outlined text-[16px]">send</span>
+        <span>Share Wishlist to Instagram DM</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Salon Toast Notification System -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-3 bg-surface-container-highest border border-secondary/50 px-5 py-3 shadow-2xl backdrop-blur-md">
+    <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+    <span id="toast-msg" class="font-label-md text-xs uppercase tracking-wider text-primary font-semibold">Notification</span>
+  </div>
+
+  <!-- Packaging Zoom Modal -->
+  <div id="packaging-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6" onclick="closePackagingModal()">
+    <div class="relative max-w-4xl max-h-[92vh] flex flex-col items-center bg-surface-container border border-secondary/40 shadow-2xl p-4 sm:p-6" onclick="event.stopPropagation()">
+      <div class="w-full flex items-center justify-between pb-4 border-b border-outline-variant/30 mb-4">
+        <div class="flex items-center space-x-2">
+          <span class="text-secondary font-label-sm text-xs uppercase tracking-widest font-semibold">JUNU Atelier Official</span>
+          <span class="text-outline">•</span>
+          <span class="text-primary font-serif text-sm">Haute Packaging & Wax Seal Presentation</span>
+        </div>
+        <button onclick="closePackagingModal()" class="text-outline hover:text-primary p-1 min-w-[36px] min-h-[36px] flex items-center justify-center" aria-label="Close Preview">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+      <div class="relative overflow-hidden max-h-[70vh] flex items-center justify-center">
+        <img src="assets/images/packaging_unboxing.jpg" alt="JUNU Official Haute Couture Unboxing Box with Wax Seal" class="max-w-full max-h-[70vh] object-contain shadow-2xl">
+      </div>
+      <div class="w-full pt-4 border-t border-outline-variant/30 mt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-outline gap-2">
+        <span>Hand-Pressed Gold Wax Seal • Acid-Free Tissue • Heavyweight Keepsake Box</span>
+        <button onclick="closePackagingModal()" class="text-secondary hover:underline font-semibold uppercase tracking-wider text-[11px]">
+          Return to Atelier
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
