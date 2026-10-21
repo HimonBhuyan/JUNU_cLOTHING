@@ -9,7 +9,7 @@ html, body {
   padding: 0;
   width: 100% !important;
   max-width: 100vw !important;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
   box-sizing: border-box !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -580,7 +580,15 @@ html.light #packaging-modal .bg-surface-container {
 .junu-stagger-5 { transition-delay: 0.40s; }
 .junu-stagger-6 { transition-delay: 0.48s; }
 
-/* Sticky Header Scroll Enhancement */
+/* Sticky Header Fixed Scroll Guarantee */
+header,
+header.sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
 header.scrolled-header {
   background-color: rgba(15, 14, 13, 0.94) !important;
   backdrop-filter: blur(16px) !important;
