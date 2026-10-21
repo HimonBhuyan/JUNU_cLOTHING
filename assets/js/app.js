@@ -128,12 +128,30 @@ function updateStaticPrices() {
 }
 
 // =========================================================================
-// 3. Category & Search Filters
+// 3. Category & Search Filters & Density View
 // =========================================================================
-function filterCategory(cat) {
+function setCategory(cat) {
+  if (!window.JUNU_STATE) window.JUNU_STATE = { activeCategory: 'all', cart: [], wishlist: [] };
   JUNU_STATE.activeCategory = cat;
   
-  // Update category buttons UI
+  // Update category buttons UI in collections.html (.cat-pill)
+  document.querySelectorAll('.cat-pill').forEach(btn => {
+    const isTarget = btn.getAttribute('data-category') === cat;
+    const badge = btn.querySelector('span:last-child');
+    if (isTarget) {
+      btn.className = "cat-pill flex items-center space-x-2 text-primary border-b-2 border-secondary font-label-md text-label-md uppercase tracking-wider py-1 font-semibold";
+      if (badge) {
+        badge.className = "text-xs px-2 py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm font-bold";
+      }
+    } else {
+      btn.className = "cat-pill flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md uppercase tracking-wider py-1 group font-normal";
+      if (badge) {
+        badge.className = "text-xs px-1.5 py-0.2 rounded-full bg-surface-container-high text-outline group-hover:text-primary font-label-sm";
+      }
+    }
+  });
+
+  // Also support legacy/alternative .cat-pill-btn if any
   document.querySelectorAll('.cat-pill-btn').forEach(btn => {
     const isTarget = btn.getAttribute('data-cat') === cat;
     btn.classList.toggle('active', isTarget);
@@ -145,33 +163,95 @@ function filterCategory(cat) {
 
   renderProducts();
 }
+function filterCategory(cat) {
+  setCategory(cat);
+}
 
 function handleSearch(query) {
-  JUNU_STATE.searchQuery = query.toLowerCase().trim();
+  if (!window.JUNU_STATE) window.JUNU_STATE = {};
+  JUNU_STATE.searchQuery = (query || '').toLowerCase().trim();
   renderProducts();
 }
 
 function handleSort(order) {
+  if (!window.JUNU_STATE) window.JUNU_STATE = {};
   JUNU_STATE.sortOrder = order;
   renderProducts();
 }
 
-function setViewMode(mode) {
-  JUNU_STATE.viewMode = mode;
-  const grid = document.getElementById('product-grid');
-  const btnLookbook = document.getElementById('view-lookbook');
-  const btnGrid = document.getElementById('view-grid');
+function setGridDensity(density) {
+  if (!window.JUNU_STATE) window.JUNU_STATE = {};
+  JUNU_STATE.gridDensity = density;
 
-  if (mode === 'grid') {
-    grid.className = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4";
-    btnGrid.className = "p-1.5 text-primary bg-surface-container-high transition-colors";
-    btnLookbook.className = "p-1.5 text-outline hover:text-primary transition-colors";
+  const grid = document.getElementById('product-grid');
+  const btn3 = document.getElementById('btn-col-3');
+  const btn4 = document.getElementById('btn-col-4');
+
+  if (density === '4') {
+    if (grid) {
+      grid.className = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-300";
+    }
+    if (btn4) {
+      btn4.className = "px-2.5 py-1 text-on-primary bg-primary rounded-sm transition-all flex items-center justify-center";
+    }
+    if (btn3) {
+      btn3.className = "px-2.5 py-1 text-on-surface-variant hover:text-primary bg-transparent rounded-sm transition-all flex items-center justify-center";
+    }
   } else {
-    grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
-    btnLookbook.className = "p-1.5 text-primary bg-surface-container-high transition-colors";
-    btnGrid.className = "p-1.5 text-outline hover:text-primary transition-colors";
+    if (grid) {
+      grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300";
+    }
+    if (btn3) {
+      btn3.className = "px-2.5 py-1 text-on-primary bg-primary rounded-sm transition-all flex items-center justify-center";
+    }
+    if (btn4) {
+      btn4.className = "px-2.5 py-1 text-on-surface-variant hover:text-primary bg-transparent rounded-sm transition-all flex items-center justify-center";
+    }
   }
 }
+function setViewMode(mode) {
+  setGridDensity(mode === 'grid' ? '4' : '3');
+}
+
+// Statement Creations Page Filters & Carousel
+function filterStatementCreations(category) {
+  document.querySelectorAll('.statement-pill').forEach(btn => {
+    const isTarget = btn.getAttribute('data-scat') === category;
+    if (isTarget) {
+      btn.className = "statement-pill px-3 py-1 bg-secondary text-on-secondary font-label-sm text-xs font-semibold uppercase tracking-wider rounded-sm transition-all shadow-sm";
+    } else {
+      btn.className = "statement-pill px-3 py-1 bg-transparent text-on-surface-variant hover:text-primary font-label-sm text-xs uppercase tracking-wider transition-colors";
+    }
+  });
+
+  document.querySelectorAll('.statement-card').forEach(card => {
+    const cardCat = card.getAttribute('data-scat');
+    if (category === 'all' || cardCat === category) {
+      card.classList.remove('hidden');
+      card.style.display = '';
+    } else {
+      card.classList.add('hidden');
+      card.style.display = 'none';
+    }
+  });
+}
+
+function scrollStatementSlider(direction) {
+  const slider = document.getElementById('statement-slider');
+  if (slider) {
+    slider.scrollBy({ left: direction * 340, behavior: 'smooth' });
+  }
+}
+
+// Expose handlers globally
+window.setCategory = setCategory;
+window.filterCategory = filterCategory;
+window.setGridDensity = setGridDensity;
+window.setViewMode = setViewMode;
+window.handleSearch = handleSearch;
+window.handleSort = handleSort;
+window.filterStatementCreations = filterStatementCreations;
+window.scrollStatementSlider = scrollStatementSlider;
 
 // =========================================================================
 // 4. Render Product Cards (Stitch Screen 2 Exact Blueprint)
@@ -181,13 +261,20 @@ function renderProducts() {
   const catalog = getCatalogProducts();
   if (!container || !catalog.length) return;
 
+  // Preserve density view classes if set
+  if (JUNU_STATE.gridDensity === '4') {
+    container.className = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-300";
+  } else {
+    container.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300";
+  }
+
   // Filter
   let items = catalog.filter(p => {
-    const matchCat = JUNU_STATE.activeCategory === 'all' || p.category === JUNU_STATE.activeCategory;
+    const matchCat = !JUNU_STATE.activeCategory || JUNU_STATE.activeCategory === 'all' || p.category === JUNU_STATE.activeCategory;
     const matchSearch = !JUNU_STATE.searchQuery || 
       p.name.toLowerCase().includes(JUNU_STATE.searchQuery) ||
       p.description.toLowerCase().includes(JUNU_STATE.searchQuery) ||
-      p.material.toLowerCase().includes(JUNU_STATE.searchQuery);
+      (p.material && p.material.toLowerCase().includes(JUNU_STATE.searchQuery));
     return matchCat && matchSearch;
   });
 
@@ -196,6 +283,8 @@ function renderProducts() {
     items.sort((a, b) => a.price_npr - b.price_npr);
   } else if (JUNU_STATE.sortOrder === 'price-desc') {
     items.sort((a, b) => b.price_npr - a.price_npr);
+  } else if (JUNU_STATE.sortOrder === 'name-asc') {
+    items.sort((a, b) => a.name.localeCompare(b.name));
   } else if (JUNU_STATE.sortOrder === 'stock') {
     items.sort((a, b) => a.remaining_stock - b.remaining_stock);
   }
@@ -1168,8 +1257,13 @@ document.addEventListener('DOMContentLoaded', () => {
     JUNU_STATE.wishlist.forEach(id => updateAllWishlistIcons(id, true));
   }
 
-  // Render initial components
-  if (typeof renderProducts === 'function') renderProducts();
+  // URL Query parameter for category (e.g. collections.html?category=goddess)
+  const urlCat = new URLSearchParams(window.location.search).get('category') || new URLSearchParams(window.location.search).get('cat');
+  if (urlCat && typeof setCategory === 'function') {
+    setCategory(urlCat);
+  } else if (typeof renderProducts === 'function') {
+    renderProducts();
+  }
   if (typeof renderHomeCollections === 'function') renderHomeCollections();
   if (typeof updateStaticPrices === 'function') updateStaticPrices();
   if (typeof renderCheckoutPage === 'function') renderCheckoutPage();
