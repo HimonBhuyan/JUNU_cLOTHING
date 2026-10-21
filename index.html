@@ -162,10 +162,13 @@
              src="assets/images/Model_in_black_gown_standing_2K_20261020205729.jpg" 
              alt="JUNU Atelier Haute Couture • Model in Black Gown">
         
-        <!-- Light Mode Hero: Model in White Gown (hero_white.jpg) -->
-        <img class="hero-img-light w-full h-full object-cover object-[center_top] sm:object-center scale-100 sm:scale-105 transition-transform duration-1000 ease-out brightness-[0.98] contrast-[1.02]" 
-             src="assets/images/hero_white.jpg" 
-             alt="JUNU Atelier Haute Couture • Model in White Gown">
+        <!-- Light Mode Hero: Model in White Gown (Full head, face, and gown visible on desktop and mobile) -->
+        <picture class="hero-img-light w-full h-full">
+          <source media="(min-width: 768px)" srcset="assets/images/hero_white_widescreen.jpg">
+          <img class="w-full h-full object-cover object-[center_top] sm:object-[center_15%] md:object-center transition-transform duration-1000 ease-out brightness-[0.98] contrast-[1.02]" 
+               src="assets/images/hero_white.jpg" 
+               alt="JUNU Atelier Haute Couture • Model in White Gown">
+        </picture>
 
         <!-- Multi-stage Scrim Gradients for Dark Mode -->
         <div class="hero-scrim-dark absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-black/60 pointer-events-none"></div>
