@@ -629,3 +629,16 @@ var JUNU_PRODUCTS = [
     "accent_color": "Diamond Crystal & Smoke"
   }
 ];
+
+if (typeof window !== 'undefined') {
+  window.JUNU_PRODUCTS = JUNU_PRODUCTS;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.JUNU_PRODUCTS = JUNU_PRODUCTS;
+}
+if (typeof global !== 'undefined') {
+  global.JUNU_PRODUCTS = JUNU_PRODUCTS;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = JUNU_PRODUCTS;
+}

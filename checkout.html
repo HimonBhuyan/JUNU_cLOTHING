@@ -289,128 +289,7 @@
 
     </div>
   </section>
-
-  <!-- Checkout Page Custom Script -->
-  <script>
-    function renderCheckoutPage() {
-      const container = document.getElementById('checkout-cart-items');
-      const subtotalEl = document.getElementById('co-subtotal');
-      const totalEl = document.getElementById('co-total');
-      if (!container) return;
-
-      const cart = JUNU_STATE.cart;
-      if (!cart || cart.length === 0) {
-        container.innerHTML = `
-          <div class="py-16 text-center space-y-4 bg-surface-container-low border border-outline-variant/20 p-8">
-            <span class="material-symbols-outlined text-5xl text-outline">shopping_bag</span>
-            <h3 class="font-headline-md text-2xl text-primary font-normal">Your Salon Bag is Empty</h3>
-            <p class="font-body-md text-sm text-on-surface-variant max-w-sm mx-auto">
-              You haven't selected any silhouettes yet. Explore our Monograph catalogue and select your creations.
-            </p>
-            <a href="collections.html" class="inline-flex items-center space-x-2 px-8 py-3.5 bg-primary text-on-primary font-label-md text-xs uppercase tracking-wider font-semibold hover:bg-secondary hover:text-on-secondary transition-all shadow-md">
-              <span>Explore Collections</span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
-          </div>
-        `;
-        if (subtotalEl) subtotalEl.textContent = formatPrice(0);
-        if (totalEl) totalEl.textContent = formatPrice(0);
-        return;
-      }
-
-      const totalNpr = cart.reduce((sum, item) => sum + ((parseFloat(item.price_npr) || 0) * (parseInt(item.quantity) || 1)), 0);
-      if (subtotalEl) subtotalEl.textContent = formatPrice(totalNpr);
-      if (totalEl) totalEl.textContent = formatPrice(totalNpr);
-
-      container.innerHTML = cart.map((item, idx) => `
-        <div class="flex items-center space-x-4 p-4 bg-surface-container-low border border-outline-variant/20">
-          <img src="${item.image}" alt="${item.name}" class="w-20 h-24 object-cover border border-outline-variant/30 flex-shrink-0" onerror="this.src='assets/images/framed_havana.jpg';" />
-          <div class="flex-1 min-w-0">
-            <h4 class="font-headline-sm text-base text-primary font-normal leading-snug">${item.name}</h4>
-            <div class="flex items-center space-x-3 text-xs font-label-sm text-secondary mt-1">
-              <span>Size: <strong>${item.size}</strong></span>
-              <span>•</span>
-              <span class="text-primary font-semibold">${formatPrice(item.price_npr)} each</span>
-            </div>
-            <div class="flex items-center space-x-3 mt-3">
-              <div class="flex items-center space-x-2">
-                <button onclick="adjustCheckoutItemQty(${idx}, -1)" class="w-7 h-7 bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary hover:border-secondary text-sm font-semibold">-</button>
-                <span class="font-label-sm text-xs text-primary px-2 font-bold">${item.quantity || 1}</span>
-                <button onclick="adjustCheckoutItemQty(${idx}, 1)" class="w-7 h-7 bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary hover:border-secondary text-sm font-semibold">+</button>
-              </div>
-              <span class="text-xs font-label-sm text-outline">|</span>
-              <span class="font-headline-md text-sm text-primary font-normal">Subtotal: ${formatPrice(item.price_npr * item.quantity)}</span>
-            </div>
-          </div>
-          <button onclick="removeCheckoutItem(${idx})" class="text-outline hover:text-primary p-2 transition-colors" title="Remove from bag">
-            <span class="material-symbols-outlined text-[20px]">delete</span>
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function adjustCheckoutItemQty(idx, delta) {
-      if (!JUNU_STATE.cart[idx]) return;
-      JUNU_STATE.cart[idx].quantity = (parseInt(JUNU_STATE.cart[idx].quantity) || 1) + delta;
-      if (JUNU_STATE.cart[idx].quantity <= 0) {
-        JUNU_STATE.cart.splice(idx, 1);
-      }
-      saveCart();
-      updateCartDrawer();
-      renderCheckoutPage();
-    }
-
-    function removeCheckoutItem(idx) {
-      JUNU_STATE.cart.splice(idx, 1);
-      saveCart();
-      updateCartDrawer();
-      renderCheckoutPage();
-      showSalonToast('Item removed from order');
-    }
-
-    function toggleDomesticPaymentDetails() {
-      const box = document.getElementById('domestic-payment-box');
-      if (box) box.classList.toggle('hidden');
-    }
-
-    function dispatchCheckoutOrder(channel) {
-      const cart = JUNU_STATE.cart;
-      if (!cart || cart.length === 0) {
-        showSalonToast('Your bag is currently empty');
-        return;
-      }
-
-      const name = document.getElementById('co-name')?.value.trim() || '';
-      const phone = document.getElementById('co-phone')?.value.trim() || '';
-      const address = document.getElementById('co-address')?.value.trim() || '';
-      const notes = document.getElementById('co-notes')?.value.trim() || '';
-
-      if (!name || !phone || !address) {
-        alert('Please fill in your Full Name, Phone/WhatsApp Contact, and Delivery Address to complete your order manifest.');
-        document.getElementById('co-name')?.focus();
-        return;
-      }
-
-      const itemsList = cart.map((item, i) => `${i + 1}. ${item.name} | Size: ${item.size} | Qty: ${item.quantity} | Rate: ${formatPrice(item.price_npr * item.quantity)}`).join('\n');
-      const totalNpr = cart.reduce((sum, item) => sum + ((parseFloat(item.price_npr) || 0) * (parseInt(item.quantity) || 1)), 0);
-
-      const manifest = `✨ JUNU ATELIER • HAUTE COUTURE ORDER MANIFEST ✨\n\nCLIENT DETAILS:\n- Name: ${name}\n- Contact: ${phone}\n- Delivery Address: ${address}${notes ? `\n- Client Notes: ${notes}` : ''}\n\nCURATED PIECES:\n${itemsList}\n\nTOTAL PAYABLE: ${formatPrice(totalNpr)} (${JUNU_STATE.currency})\nPACKAGING: Complimentary Archival Velvet Box\n\nHello Roselyn Magar! I have reviewed my order on the web platform and would like to confirm acquisition and dispatch timeframe.`;
-
-      if (channel === 'instagram') {
-        const url = `https://ig.me/m/junu.clo?text=${encodeURIComponent(manifest)}`;
-        window.open(url, '_blank');
-      } else {
-        const url = `https://wa.me/9779800000000?text=${encodeURIComponent(manifest)}`;
-        window.open(url, '_blank');
-      }
-
-      showSalonToast('Order Manifest generated. Opening concierge conversation...');
-    }
-
-    window.addEventListener('load', () => {
-      renderCheckoutPage();
-    });
-  </script>
+  </section>
 
   </main>
 
@@ -706,7 +585,199 @@
 
   <script src="assets/js/products.js"></script>
   <script src="assets/js/app.js"></script>
-  
+
+  <!-- Checkout Page Custom Script (Runs with full access to JUNU_STATE and formatMoney) -->
+  <script>
+    function getCheckoutCart() {
+      if (window.JUNU_STATE && Array.isArray(window.JUNU_STATE.cart)) {
+        return window.JUNU_STATE.cart;
+      }
+      try {
+        const stored = JSON.parse(localStorage.getItem('junu_cart') || '[]');
+        if (window.JUNU_STATE) window.JUNU_STATE.cart = stored;
+        return stored;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function renderCheckoutPage() {
+      const container = document.getElementById('checkout-cart-items');
+      const subtotalEl = document.getElementById('co-subtotal');
+      const totalEl = document.getElementById('co-total');
+      if (!container) return;
+
+      const cart = getCheckoutCart();
+
+      if (!cart || cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-16 text-center space-y-4 bg-surface-container-low border border-outline-variant/20 p-8">
+            <span class="material-symbols-outlined text-5xl text-outline">shopping_bag</span>
+            <h3 class="font-headline-md text-2xl text-primary font-normal">Your Salon Bag is Empty</h3>
+            <p class="font-body-md text-sm text-on-surface-variant max-w-sm mx-auto">
+              You haven't selected any silhouettes yet. Explore our Monograph catalogue and select your creations.
+            </p>
+            <a href="collections.html" class="inline-flex items-center space-x-2 px-8 py-3.5 bg-primary text-on-primary font-label-md text-xs uppercase tracking-wider font-semibold hover:bg-secondary hover:text-on-secondary transition-all shadow-md">
+              <span>Explore Collections</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+        `;
+        const zeroMoney = typeof formatMoney === 'function' ? formatMoney(0) : 'Rs. 0';
+        if (subtotalEl) subtotalEl.textContent = zeroMoney;
+        if (totalEl) totalEl.textContent = zeroMoney;
+        return;
+      }
+
+      const totalNpr = cart.reduce((sum, item) => {
+        const qty = parseInt(item.qty || item.quantity, 10) || 1;
+        const price = parseFloat(item.price_npr) || 0;
+        return sum + (price * qty);
+      }, 0);
+
+      const formattedTotal = typeof formatMoney === 'function' ? formatMoney(totalNpr) : `Rs. ${totalNpr.toLocaleString()}`;
+      if (subtotalEl) subtotalEl.textContent = formattedTotal;
+      if (totalEl) totalEl.textContent = formattedTotal;
+
+      container.innerHTML = cart.map((item, idx) => {
+        const qty = parseInt(item.qty || item.quantity, 10) || 1;
+        const itemPrice = parseFloat(item.price_npr) || 0;
+        const lineTotal = itemPrice * qty;
+        const formattedItemPrice = typeof formatMoney === 'function' ? formatMoney(itemPrice) : `Rs. ${itemPrice.toLocaleString()}`;
+        const formattedLineTotal = typeof formatMoney === 'function' ? formatMoney(lineTotal) : `Rs. ${lineTotal.toLocaleString()}`;
+        const itemImg = item.image || 'assets/images/junu_official_logo.jpg';
+        const itemSize = item.size || 'M';
+
+        return `
+        <div class="flex items-center space-x-4 p-4 bg-surface-container-low border border-outline-variant/20 hover:border-secondary/40 transition-colors">
+          <a href="product.html?id=${item.id}" class="w-20 h-24 flex-shrink-0 block overflow-hidden border border-outline-variant/30 hover:border-secondary transition-colors" title="Inspect ${item.name}">
+            <img src="${itemImg}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='assets/images/junu_official_logo.jpg';" />
+          </a>
+          <div class="flex-1 min-w-0">
+            <a href="product.html?id=${item.id}" class="hover:text-secondary transition-colors block">
+              <h4 class="font-headline-sm text-base text-primary font-normal leading-snug truncate">${item.name}</h4>
+            </a>
+            <div class="flex items-center space-x-3 text-xs font-label-sm text-secondary mt-1">
+              <span>Size: <strong class="text-secondary">${itemSize}</strong></span>
+              <span>•</span>
+              <span class="text-primary font-semibold">${formattedItemPrice} each</span>
+            </div>
+            <div class="flex items-center space-x-3 mt-3">
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="adjustCheckoutItemQty(${idx}, -1)" class="w-7 h-7 bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary hover:border-secondary text-sm font-semibold transition-colors" title="Decrease Quantity">-</button>
+                <span class="font-label-sm text-xs text-primary px-2 font-bold">${qty}</span>
+                <button type="button" onclick="adjustCheckoutItemQty(${idx}, 1)" class="w-7 h-7 bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary hover:border-secondary text-sm font-semibold transition-colors" title="Increase Quantity">+</button>
+              </div>
+              <span class="text-xs font-label-sm text-outline">|</span>
+              <span class="font-headline-md text-sm text-primary font-normal">Subtotal: ${formattedLineTotal}</span>
+            </div>
+          </div>
+          <button type="button" onclick="removeCheckoutItem(${idx})" class="text-outline hover:text-red-400 p-2 transition-colors" title="Remove from bag">
+            <span class="material-symbols-outlined text-[20px]">delete</span>
+          </button>
+        </div>
+      `;
+      }).join('');
+    }
+
+    function adjustCheckoutItemQty(idx, delta) {
+      const cart = getCheckoutCart();
+      if (!cart[idx]) return;
+      const item = cart[idx];
+      const curQty = parseInt(item.qty || item.quantity, 10) || 1;
+      const newQty = curQty + delta;
+      if (newQty <= 0) {
+        cart.splice(idx, 1);
+      } else {
+        item.qty = newQty;
+        item.quantity = newQty;
+      }
+      if (window.JUNU_STATE) window.JUNU_STATE.cart = cart;
+      localStorage.setItem('junu_cart', JSON.stringify(cart));
+      if (typeof updateCartDrawer === 'function') updateCartDrawer();
+      renderCheckoutPage();
+    }
+
+    function removeCheckoutItem(idx) {
+      const cart = getCheckoutCart();
+      if (!cart[idx]) return;
+      cart.splice(idx, 1);
+      if (window.JUNU_STATE) window.JUNU_STATE.cart = cart;
+      localStorage.setItem('junu_cart', JSON.stringify(cart));
+      if (typeof updateCartDrawer === 'function') updateCartDrawer();
+      renderCheckoutPage();
+      if (typeof showSalonToast === 'function') {
+        showSalonToast('Item removed from order');
+      }
+    }
+
+    function toggleDomesticPaymentDetails() {
+      const box = document.getElementById('domestic-payment-box');
+      if (box) box.classList.toggle('hidden');
+    }
+
+    function dispatchCheckoutOrder(channel) {
+      const cart = getCheckoutCart();
+      if (!cart || cart.length === 0) {
+        if (typeof showSalonToast === 'function') showSalonToast('Your bag is currently empty');
+        return;
+      }
+
+      const name = document.getElementById('co-name')?.value.trim() || '';
+      const phone = document.getElementById('co-phone')?.value.trim() || '';
+      const address = document.getElementById('co-address')?.value.trim() || '';
+      const notes = document.getElementById('co-notes')?.value.trim() || '';
+
+      if (!name || !phone || !address) {
+        alert('Please fill in your Full Name, Phone/WhatsApp Contact, and Delivery Address to complete your order manifest.');
+        document.getElementById('co-name')?.focus();
+        return;
+      }
+
+      const itemsList = cart.map((item, i) => {
+        const qty = parseInt(item.qty || item.quantity, 10) || 1;
+        const price = parseFloat(item.price_npr) || 0;
+        const formattedRate = typeof formatMoney === 'function' ? formatMoney(price * qty) : `Rs. ${(price * qty).toLocaleString()}`;
+        return `${i + 1}. ${item.name} | Size: ${item.size || 'M'} | Qty: ${qty} | Rate: ${formattedRate}`;
+      }).join('\n');
+
+      const totalNpr = cart.reduce((sum, item) => {
+        const qty = parseInt(item.qty || item.quantity, 10) || 1;
+        return sum + ((parseFloat(item.price_npr) || 0) * qty);
+      }, 0);
+
+      const formattedTotal = typeof formatMoney === 'function' ? formatMoney(totalNpr) : `Rs. ${totalNpr.toLocaleString()}`;
+      const currencyCode = (window.JUNU_STATE && window.JUNU_STATE.currency) ? window.JUNU_STATE.currency : 'NPR';
+
+      const manifest = `✨ JUNU ATELIER • HAUTE COUTURE ORDER MANIFEST ✨\n\nCLIENT DETAILS:\n- Name: ${name}\n- Contact: ${phone}\n- Delivery Address: ${address}${notes ? `\n- Client Notes: ${notes}` : ''}\n\nCURATED PIECES:\n${itemsList}\n\nTOTAL PAYABLE: ${formattedTotal} (${currencyCode})\nPACKAGING: Complimentary Archival Velvet Box\n\nHello Roselyn Magar! I have reviewed my order on the web platform and would like to confirm acquisition and dispatch timeframe.`;
+
+      if (channel === 'instagram') {
+        const url = `https://ig.me/m/junu.clo?text=${encodeURIComponent(manifest)}`;
+        window.open(url, '_blank');
+      } else {
+        const url = `https://wa.me/9779800000000?text=${encodeURIComponent(manifest)}`;
+        window.open(url, '_blank');
+      }
+
+      if (typeof showSalonToast === 'function') {
+        showSalonToast('Order Manifest generated. Opening concierge conversation...');
+      }
+    }
+
+    // Attach to global window
+    window.renderCheckoutPage = renderCheckoutPage;
+    window.adjustCheckoutItemQty = adjustCheckoutItemQty;
+    window.removeCheckoutItem = removeCheckoutItem;
+    window.dispatchCheckoutOrder = dispatchCheckoutOrder;
+
+    // Execute immediately and on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderCheckoutPage);
+    } else {
+      renderCheckoutPage();
+    }
+    window.addEventListener('load', renderCheckoutPage);
+  </script>
 
 </body>
 </html>

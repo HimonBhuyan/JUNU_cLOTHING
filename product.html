@@ -787,6 +787,27 @@
         accentBadge.innerText = p.accent_color + ' Palette';
       }
 
+      // Dynamic Sizes for this specific piece
+      const sizeContainer = document.getElementById('size-options-container');
+      const activeSizeLabel = document.getElementById('active-size-label');
+      const availableSizes = (p.sizes && p.sizes.length > 0) ? p.sizes : ['XS', 'S', 'M', 'Custom Fit'];
+      selectedSize = availableSizes[0] || 'S';
+      if (activeSizeLabel) activeSizeLabel.innerText = '(' + selectedSize + ')';
+
+      if (sizeContainer) {
+        const cols = availableSizes.length <= 3 ? `grid-cols-${availableSizes.length}` : (availableSizes.length === 5 ? 'grid-cols-3 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-4');
+        sizeContainer.className = `grid ${cols} gap-2.5`;
+        sizeContainer.innerHTML = availableSizes.map((s, idx) => `
+          <button 
+            type="button" 
+            onclick="selectProductSize(this, '${s}')" 
+            class="prod-size-btn py-3 px-2 sm:px-3 text-center ${idx === 0 ? 'bg-secondary text-on-secondary border-secondary font-bold shadow-md' : 'bg-surface-container text-primary border-outline-variant/40 hover:border-secondary font-semibold'} border font-label-sm text-xs uppercase tracking-wider transition-all"
+          >
+            ${s}
+          </button>
+        `).join('');
+      }
+
       // Wishlist Button state
       updateWishlistButton();
     }
@@ -934,21 +955,8 @@
     // Add to Bag Action
     function addProductPageToBag() {
       if (!currentProduct) return;
-      if (typeof quickAddWithSize === 'function') {
-        quickAddWithSize(currentProduct.id, selectedSize);
-      } else if (typeof addToBag === 'function') {
-        addToBag(currentProduct.id, selectedSize);
-      } else {
-        alert('Added ' + currentProduct.name + ' (' + selectedSize + ') to Shopping Bag!');
-      }
-
-      // Slide open the cart drawer to confirm addition
-      if (typeof toggleCartDrawer === 'function') {
-        const drawer = document.getElementById('cart-drawer');
-        if (drawer && drawer.classList.contains('translate-x-full')) {
-          toggleCartDrawer();
-        }
-      }
+      addToCart(currentProduct, selectedSize, 1);
+      openCartDrawer();
     }
 
     // Direct Concierge Actions

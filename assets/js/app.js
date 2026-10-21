@@ -19,6 +19,25 @@ const JUNU_STATE = {
   activeQvProduct: null
 };
 
+if (typeof window !== 'undefined') {
+  window.JUNU_STATE = JUNU_STATE;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.JUNU_STATE = JUNU_STATE;
+}
+if (typeof global !== 'undefined') {
+  global.JUNU_STATE = JUNU_STATE;
+}
+
+// Safe helper to access catalog products across all environments
+function getCatalogProducts() {
+  if (typeof window !== 'undefined' && Array.isArray(window.JUNU_PRODUCTS)) return window.JUNU_PRODUCTS;
+  if (typeof globalThis !== 'undefined' && Array.isArray(globalThis.JUNU_PRODUCTS)) return globalThis.JUNU_PRODUCTS;
+  if (typeof global !== 'undefined' && Array.isArray(global.JUNU_PRODUCTS)) return global.JUNU_PRODUCTS;
+  if (typeof JUNU_PRODUCTS !== 'undefined' && Array.isArray(JUNU_PRODUCTS)) return JUNU_PRODUCTS;
+  return [];
+}
+
 // Currency Exchange Rates (Base NPR)
 const EXCHANGE_RATES = {
   NPR: { rate: 1, symbol: "Rs. ", code: "NPR" },
@@ -93,6 +112,8 @@ function setCurrency(curr) {
   if (typeof renderProducts === 'function') renderProducts();
   if (typeof renderHomeCollections === 'function') renderHomeCollections();
   if (typeof updateStaticPrices === 'function') updateStaticPrices();
+  if (typeof updatePriceDisplay === 'function') updatePriceDisplay();
+  if (typeof renderCheckoutPage === 'function') renderCheckoutPage();
   updateCartDrawer();
   showSalonToast(`Currency set to ${curr}`);
 }
@@ -157,10 +178,11 @@ function setViewMode(mode) {
 // =========================================================================
 function renderProducts() {
   const container = document.getElementById('product-grid');
-  if (!container || !window.JUNU_PRODUCTS) return;
+  const catalog = getCatalogProducts();
+  if (!container || !catalog.length) return;
 
   // Filter
-  let items = JUNU_PRODUCTS.filter(p => {
+  let items = catalog.filter(p => {
     const matchCat = JUNU_STATE.activeCategory === 'all' || p.category === JUNU_STATE.activeCategory;
     const matchSearch = !JUNU_STATE.searchQuery || 
       p.name.toLowerCase().includes(JUNU_STATE.searchQuery) ||
@@ -179,10 +201,10 @@ function renderProducts() {
   }
 
   // Update category counts
-  const allCount = JUNU_PRODUCTS.length;
-  const goddessCount = JUNU_PRODUCTS.filter(p => p.category === 'goddess').length;
-  const afterdarkCount = JUNU_PRODUCTS.filter(p => p.category === 'afterdark').length;
-  const accentsCount = JUNU_PRODUCTS.filter(p => p.category === 'accents').length;
+  const allCount = catalog.length;
+  const goddessCount = catalog.filter(p => p.category === 'goddess').length;
+  const afterdarkCount = catalog.filter(p => p.category === 'afterdark').length;
+  const accentsCount = catalog.filter(p => p.category === 'accents').length;
 
   const elAll = document.getElementById('count-all');
   const elGod = document.getElementById('count-goddess');
@@ -338,9 +360,10 @@ function toggleHomeCollectionsExpand() {
 
 function renderHomeCollections() {
   const container = document.getElementById('home-collections-grid');
-  if (!container || !window.JUNU_PRODUCTS) return;
+  const catalog = getCatalogProducts();
+  if (!container || !catalog.length) return;
 
-  let items = JUNU_PRODUCTS.filter(p => {
+  let items = catalog.filter(p => {
     return homeActiveCategory === 'all' || p.category === homeActiveCategory;
   });
 
@@ -447,39 +470,69 @@ function renderHomeCollections() {
 function saveCart() {
   localStorage.setItem('junu_cart', JSON.stringify(JUNU_STATE.cart));
   updateCartDrawer();
+  if (typeof renderCheckoutPage === 'function') {
+    try {
+      renderCheckoutPage();
+    } catch (e) {
+      console.error('Error rendering checkout:', e);
+    }
+  }
 }
 
-function addToCart(product, size = 'S', qty = 1) {
-  const existing = JUNU_STATE.cart.find(i => i.id === product.id && i.size === size);
+function addToCart(productOrId, size = 'S', qty = 1) {
+  let product = productOrId;
+  if (typeof productOrId === 'string') {
+    const catalog = getCatalogProducts();
+    product = catalog.find(p => p.id === productOrId);
+  }
+  if (!product) {
+    console.error('addToCart: Product not found for identifier:', productOrId);
+    return;
+  }
+
+  const validSize = size || 'S';
+  const validQty = parseInt(qty, 10) || 1;
+
+  const existing = JUNU_STATE.cart.find(i => i.id === product.id && i.size === validSize);
   if (existing) {
-    existing.qty += qty;
+    const curQty = parseInt(existing.qty || existing.quantity, 10) || 1;
+    existing.qty = curQty + validQty;
+    existing.quantity = existing.qty;
   } else {
     JUNU_STATE.cart.push({
       id: product.id,
       name: product.name,
       price_npr: product.price_npr,
       image: product.image,
-      size: size,
-      qty: qty
+      size: validSize,
+      qty: validQty,
+      quantity: validQty
     });
   }
   saveCart();
-  showSalonToast(`Added ${product.short_name || product.name} (${size}) to Bag`);
+  showSalonToast(`Added ${product.short_name || product.name} (${validSize}) to Bag`);
 }
 
 function quickAddProduct(id, size = 'S') {
-  const product = JUNU_PRODUCTS.find(p => p.id === id);
-  if (!product) return;
-  addToCart(product, size, 1);
-  openCart();
+  addToCart(id, size, 1);
+  openCartDrawer();
+}
+
+function quickAddWithSize(id, size = 'S') {
+  addToCart(id, size, 1);
+  openCartDrawer();
 }
 
 function updateCartQty(id, size, delta) {
   const item = JUNU_STATE.cart.find(i => i.id === id && i.size === size);
   if (!item) return;
-  item.qty += delta;
-  if (item.qty <= 0) {
+  const curQty = parseInt(item.qty || item.quantity, 10) || 1;
+  const newQty = curQty + delta;
+  if (newQty <= 0) {
     JUNU_STATE.cart = JUNU_STATE.cart.filter(i => !(i.id === id && i.size === size));
+  } else {
+    item.qty = newQty;
+    item.quantity = newQty;
   }
   saveCart();
 }
@@ -487,6 +540,37 @@ function updateCartQty(id, size, delta) {
 function removeCartItem(id, size) {
   JUNU_STATE.cart = JUNU_STATE.cart.filter(i => !(i.id === id && i.size === size));
   saveCart();
+}
+
+// Global Aliases & Utilities for complete interoperability across all pages
+if (typeof window !== 'undefined') {
+  window.formatMoney = formatMoney;
+  window.formatPrice = formatMoney;
+  window.addToCart = addToCart;
+  window.addToBag = addToCart;
+  window.quickAddProduct = quickAddProduct;
+  window.quickAddWithSize = quickAddWithSize;
+  window.openCartDrawer = openCartDrawer;
+  window.closeCartDrawer = closeCartDrawer;
+  window.toggleCartDrawer = function() {
+    const drawer = document.getElementById('cart-drawer');
+    if (drawer && drawer.classList.contains('translate-x-full')) {
+      openCartDrawer();
+    } else {
+      closeCartDrawer();
+    }
+  };
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.formatMoney = formatMoney;
+  globalThis.formatPrice = formatMoney;
+  globalThis.addToCart = addToCart;
+  globalThis.addToBag = addToCart;
+  globalThis.quickAddProduct = quickAddProduct;
+  globalThis.quickAddWithSize = quickAddWithSize;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { JUNU_STATE, formatMoney, addToCart, quickAddProduct, quickAddWithSize };
 }
 
 // =========================================================================
@@ -622,9 +706,10 @@ function updateWishlistDrawer() {
     return;
   }
 
-  // Find products in JUNU_PRODUCTS
+  // Find products in catalog
+  const catalog = getCatalogProducts();
   const items = JUNU_STATE.wishlist.map(id => {
-    let p = (typeof JUNU_PRODUCTS !== 'undefined' ? JUNU_PRODUCTS.find(x => x.id === id) : null);
+    let p = catalog.find(x => x.id === id);
     if (!p) {
       p = {
         id,
@@ -638,9 +723,13 @@ function updateWishlistDrawer() {
 
   container.innerHTML = items.map(p => `
     <div class="flex items-center space-x-3 sm:space-x-4 bg-surface-container p-3 border border-outline-variant/30">
-      <img src="${p.image}" alt="${p.name}" class="w-16 h-20 object-cover bg-surface-container-lowest">
+      <a href="product.html?id=${p.id}" onclick="closeWishlistDrawer()" class="block flex-shrink-0" title="Inspect ${p.name}">
+        <img src="${p.image}" alt="${p.name}" class="w-16 h-20 object-cover bg-surface-container-lowest hover:opacity-80 transition-opacity">
+      </a>
       <div class="flex-1 min-w-0 space-y-1">
-        <p class="text-sm font-semibold text-primary truncate font-serif">${p.name}</p>
+        <a href="product.html?id=${p.id}" onclick="closeWishlistDrawer()" class="hover:text-secondary transition-colors block">
+          <p class="text-sm font-semibold text-primary truncate font-serif">${p.name}</p>
+        </a>
         <p class="text-xs text-secondary font-semibold font-mono">${formatMoney(p.price_npr)}</p>
         <div class="flex items-center space-x-2 pt-1">
           <button onclick="addToBagFromWishlist('${p.id}')" class="px-2.5 py-1 bg-secondary text-on-secondary hover:bg-primary font-label-sm text-[10px] uppercase tracking-wider font-semibold flex items-center space-x-1 transition-colors">
@@ -657,9 +746,10 @@ function updateWishlistDrawer() {
 }
 
 function addToBagFromWishlist(productId) {
-  const p = (typeof JUNU_PRODUCTS !== 'undefined' ? JUNU_PRODUCTS.find(x => x.id === productId) : null);
+  const catalog = getCatalogProducts();
+  const p = catalog.find(x => x.id === productId);
   if (p) {
-    addToCart(p.id, 'M', 1);
+    addToCart(p.id, (p.sizes && p.sizes[0]) || 'M', 1);
     closeWishlistDrawer();
     openCartDrawer();
     showSalonToast(`"${p.name}" transferred to shopping bag`);
@@ -667,8 +757,9 @@ function addToBagFromWishlist(productId) {
 }
 
 function shareWishlistToInstagram() {
+  const catalog = getCatalogProducts();
   const names = (JUNU_STATE.wishlist || []).map(id => {
-    const p = (typeof JUNU_PRODUCTS !== 'undefined' ? JUNU_PRODUCTS.find(x => x.id === id) : null);
+    const p = catalog.find(x => x.id === id);
     return p ? p.name : id;
   });
   const text = encodeURIComponent(`Hello Roselyn! I would like to inquire about these pieces from my JUNU Wishlist:\n${names.map((n, i) => `${i + 1}. ${n}`).join('\n')}`);
@@ -721,9 +812,13 @@ function updateCartDrawer() {
     const itemImg = item.image || 'assets/images/junu_official_logo.jpg';
     return `
     <div class="flex items-center space-x-3 sm:space-x-4 bg-surface-container p-3 border border-outline-variant/30">
-      <img src="${itemImg}" onerror="this.src='assets/images/junu_official_logo.jpg'" alt="${item.name}" class="w-16 h-20 object-cover bg-surface-container-lowest">
+      <a href="product.html?id=${item.id}" onclick="closeCartDrawer()" class="block flex-shrink-0" title="Inspect ${item.name}">
+        <img src="${itemImg}" onerror="this.src='assets/images/junu_official_logo.jpg'" alt="${item.name}" class="w-16 h-20 object-cover bg-surface-container-lowest hover:opacity-80 transition-opacity">
+      </a>
       <div class="flex-1 min-w-0 space-y-1">
-        <p class="text-sm font-semibold text-primary truncate font-serif">${item.name}</p>
+        <a href="product.html?id=${item.id}" onclick="closeCartDrawer()" class="hover:text-secondary transition-colors block">
+          <p class="text-sm font-semibold text-primary truncate font-serif">${item.name}</p>
+        </a>
         <p class="text-xs text-secondary font-semibold font-mono">${formatMoney(item.price_npr)} • Size ${item.size || 'M'}</p>
         <div class="flex items-center space-x-2 pt-1">
           <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="w-6 h-6 bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-xs text-primary hover:border-secondary transition-colors">-</button>
@@ -755,7 +850,8 @@ function checkoutViaInstagram() {
 // 6. Quick View Modal
 // =========================================================================
 function openQuickView(id) {
-  const product = JUNU_PRODUCTS.find(p => p.id === id);
+  const catalog = getCatalogProducts();
+  const product = catalog.find(p => p.id === id);
   if (!product) return;
 
   JUNU_STATE.activeQvProduct = product;
@@ -897,6 +993,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof renderProducts === 'function') renderProducts();
   if (typeof renderHomeCollections === 'function') renderHomeCollections();
   if (typeof updateStaticPrices === 'function') updateStaticPrices();
+  if (typeof renderCheckoutPage === 'function') renderCheckoutPage();
   updateCartDrawer();
   updateWishlistDrawer();
 
@@ -1000,7 +1097,7 @@ function initScrollAnimations() {
 }
 
 function observeNewReveals(scope) {
-  if (!scope) return;
+  if (!scope || typeof scope.querySelectorAll !== 'function') return;
   const els = scope.querySelectorAll('.junu-reveal, .junu-reveal-left, .junu-reveal-right, .junu-reveal-scale');
   if ('IntersectionObserver' in window && junuScrollObserver) {
     els.forEach(el => junuScrollObserver.observe(el));
