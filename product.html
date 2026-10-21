@@ -164,7 +164,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
       
       <!-- ================= LEFT COLUMN: 3D VIEWER & STUDIO GALLERY ================= -->
-      <div class="lg:col-span-7 flex flex-col space-y-5">
+      <div class="lg:col-span-7 flex flex-col space-y-5 junu-reveal-left">
         
         <!-- View Mode Switcher Header -->
         <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3 mb-4">
@@ -306,7 +306,7 @@
       </div>
 
       <!-- ================= RIGHT COLUMN: PRODUCT INFO & PURCHASE SUITE ================= -->
-      <div class="lg:col-span-5 flex flex-col space-y-6">
+      <div class="lg:col-span-5 flex flex-col space-y-6 junu-reveal-right">
         
         <!-- Scarcity & Edition Badges -->
         <div class="flex flex-wrap items-center gap-2">
@@ -494,7 +494,7 @@
     </div>
 
     <!-- ================= COMPLETE THE LOOK / YOU MAY ALSO ADMIRE ================= -->
-    <section class="mt-20 pt-12 border-t border-outline-variant/30">
+    <section class="mt-20 pt-12 border-t border-outline-variant/30 junu-reveal">
       <div class="flex items-end justify-between mb-8">
         <div>
           <span class="font-label-sm text-xs uppercase tracking-[0.24em] text-secondary font-semibold">Curated Pairings</span>
@@ -514,7 +514,7 @@
   </main>
 
   <!-- Luxury Footer -->
-  <footer class="bg-surface-container-lowest border-t border-outline-variant/30 mt-auto">
+  <footer class="bg-surface-container-lowest border-t border-outline-variant/30 mt-auto junu-reveal">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
         
@@ -997,8 +997,8 @@
         .filter(p => p.id !== currentId)
         .slice(0, 4);
 
-      grid.innerHTML = companions.map(p => `
-        <article class="group flex flex-col bg-surface-container-low border border-outline-variant/20 hover:shadow-2xl transition-all duration-300">
+      grid.innerHTML = companions.map((p, idx) => `
+        <article class="group flex flex-col bg-surface-container-low border border-outline-variant/20 hover:shadow-2xl transition-all duration-300 junu-reveal junu-stagger-${(idx % 4) + 1}">
           <div class="relative aspect-[3/4] overflow-hidden bg-surface-container-lowest cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">
             <img 
               src="${p.image}" 
@@ -1042,6 +1042,10 @@
           </div>
         </article>
       `).join('');
+
+      if (typeof observeNewReveals === 'function') {
+        observeNewReveals(grid);
+      }
     }
   </script>
 

@@ -232,8 +232,10 @@ function renderProducts() {
     const isWishlisted = JUNU_STATE.wishlist.includes(product.id);
     const priceFormatted = formatMoney(product.price_npr);
 
+    const staggerClass = `junu-stagger-${(idx % 4) + 1}`;
+
     return `
-      <article class="group flex flex-col bg-surface-container-low border border-outline-variant/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative" data-id="${product.id}">
+      <article class="group flex flex-col bg-surface-container-low border border-outline-variant/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative junu-reveal ${staggerClass}" data-id="${product.id}">
         
         <!-- Media Canvas with Hover Size Slide-Up -->
         <div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-container-lowest flex items-center justify-center">
@@ -326,6 +328,10 @@ function renderProducts() {
       </article>
     `;
   }).join('');
+
+  if (typeof observeNewReveals === 'function') {
+    observeNewReveals(container);
+  }
 }
 
 // =========================================================================

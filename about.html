@@ -133,7 +133,7 @@
     
   <!-- Maison Hero -->
   <section class="w-full bg-surface-container-lowest py-16 px-6 lg:px-12 border-b border-outline-variant/20">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6 junu-reveal">
       <div>
         <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
@@ -144,6 +144,13 @@
         <h1 class="font-headline-lg text-4xl sm:text-5xl lg:text-6xl text-primary font-normal mt-2 leading-tight">
           The Maison
         </h1>
+        <!-- Subtle Animated Scroll Indicator -->
+        <div class="pt-6 flex items-center space-x-3 text-outline/80 text-xs font-label-sm uppercase tracking-[0.25em] animate-junu-float">
+          <span class="w-4 h-7 rounded-full border border-secondary/50 flex items-start justify-center p-1">
+            <span class="w-1 h-2 bg-secondary rounded-full animate-bounce"></span>
+          </span>
+          <span class="text-[10px] text-on-surface-variant/80 tracking-widest">Scroll to Explore The Maison</span>
+        </div>
       </div>
       <p class="font-body-md text-sm sm:text-base text-on-surface-variant font-light max-w-md leading-relaxed">
         Founded in Kathmandu by designer Roselyn Magar, JUNU represents a quiet revolution in modern Himalayan luxury—bridging anatomical corsetry with unapologetic feminine sovereignty.
@@ -155,7 +162,7 @@
   <section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-16 space-y-16">
     
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-5 aspect-[3/4] bg-surface-container overflow-hidden border border-outline-variant/30 relative">
+      <div class="lg:col-span-5 aspect-[3/4] bg-surface-container overflow-hidden border border-outline-variant/30 relative junu-reveal-left">
         <img src="assets/images/founder_portrait.jpg" alt="Roselyn Magar" class="w-full h-full object-cover" onerror="this.src='assets/images/hero_model_black_gown_2k.jpg';" />
         <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"></div>
         <div class="absolute bottom-6 left-6 right-6">
@@ -165,7 +172,7 @@
         </div>
       </div>
 
-      <div class="lg:col-span-7 space-y-6">
+      <div class="lg:col-span-7 space-y-6 junu-reveal-right">
         <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-secondary font-semibold">
           The Manifesto
         </span>
@@ -197,9 +204,9 @@
     <!-- =========================================================================
          SECTION: STRUCTURAL ENGINEERING (THE ANATOMY OF ARCHITECTURE)
          ========================================================================= -->
-    <div id="structural-engineering" class="pt-12 border-t border-outline-variant/20 space-y-12">
+    <div id="structural-engineering" class="pt-12 border-t border-outline-variant/20 space-y-12 junu-reveal">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div class="lg:col-span-6 space-y-6">
+        <div class="lg:col-span-6 space-y-6 junu-reveal-left">
           <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
             <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
             <span>STRUCTURAL ENGINEERING</span>
@@ -218,7 +225,7 @@
         </div>
 
         <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors">
+          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors junu-reveal junu-stagger-1">
             <span class="material-symbols-outlined text-secondary text-3xl">straighten</span>
             <h4 class="font-headline-sm text-base text-primary font-semibold uppercase tracking-wider">16-24 Steel Stays</h4>
             <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed">
@@ -226,7 +233,7 @@
             </p>
           </div>
 
-          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors">
+          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors junu-reveal junu-stagger-2">
             <span class="material-symbols-outlined text-secondary text-3xl">layers</span>
             <h4 class="font-headline-sm text-base text-primary font-semibold uppercase tracking-wider">French Cotton Coutil</h4>
             <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed">
@@ -234,7 +241,7 @@
             </p>
           </div>
 
-          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors">
+          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors junu-reveal junu-stagger-3">
             <span class="material-symbols-outlined text-secondary text-3xl">gesture</span>
             <h4 class="font-headline-sm text-base text-primary font-semibold uppercase tracking-wider">Hand-Embroidered Velvet</h4>
             <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed">
@@ -242,7 +249,7 @@
             </p>
           </div>
 
-          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors">
+          <div class="p-6 bg-surface-container border border-outline-variant/25 space-y-3 hover:border-secondary transition-colors junu-reveal junu-stagger-4">
             <span class="material-symbols-outlined text-secondary text-3xl">eco</span>
             <h4 class="font-headline-sm text-base text-primary font-semibold uppercase tracking-wider">Zero-Waste Draping</h4>
             <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed">
@@ -256,7 +263,7 @@
     <!-- =========================================================================
          SECTION: WHY CHOOSE JUNU ATELIER (CORE PILLARS & ARCHIVAL PHILOSOPHY)
          ========================================================================= -->
-    <div class="pt-12 border-t border-outline-variant/20 space-y-12">
+    <div class="pt-12 border-t border-outline-variant/20 space-y-12 junu-reveal">
       
       <!-- Section Header -->
       <div class="max-w-3xl space-y-3">
@@ -278,7 +285,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <!-- Pillar 1: Spiral Steel Architecture -->
-        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl">
+        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl junu-reveal junu-stagger-1">
           <!-- Visual Canvas -->
           <div class="relative aspect-[4/3] w-full overflow-hidden bg-surface-container-lowest">
             <img src="assets/images/lipsendra_mannequin.jpg" 
@@ -318,7 +325,7 @@
         </div>
 
         <!-- Pillar 2: Restricted Numbered Batches -->
-        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl">
+        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl junu-reveal junu-stagger-2">
           <!-- Visual Canvas -->
           <div class="relative aspect-[4/3] w-full overflow-hidden bg-surface-container-lowest">
             <img src="assets/images/gold_lame_gown_2k.jpg" 
@@ -358,7 +365,7 @@
         </div>
 
         <!-- Pillar 3: 18–24 Hours Handcraft -->
-        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl">
+        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl junu-reveal junu-stagger-3">
           <!-- Visual Canvas -->
           <div class="relative aspect-[4/3] w-full overflow-hidden bg-surface-container-lowest">
             <img src="assets/images/drop_skulletra_hd.jpg" 
@@ -398,7 +405,7 @@
         </div>
 
         <!-- Pillar 4: Bespoke Salon Concierge -->
-        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl">
+        <div class="group bg-surface-container border border-outline-variant/30 flex flex-col justify-between overflow-hidden hover:border-secondary transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl junu-reveal junu-stagger-4">
           <!-- Visual Canvas -->
           <div class="relative aspect-[4/3] w-full overflow-hidden bg-surface-container-lowest">
             <img src="assets/images/founder_portrait.jpg" 
@@ -440,7 +447,7 @@
       </div>
 
       <!-- Founder Quote & Atelier Callout Banner -->
-      <div class="p-8 sm:p-12 bg-surface-container border border-outline-variant/30 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="p-8 sm:p-12 bg-surface-container border border-outline-variant/30 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center junu-reveal">
         <div class="lg:col-span-8 space-y-4">
           <span class="text-secondary font-label-sm text-xs uppercase tracking-widest font-semibold flex items-center space-x-2">
             <span class="w-2 h-0.5 bg-secondary"></span>
@@ -472,7 +479,7 @@
 
   
   <!-- Luxury Atelier Footer -->
-  <footer class="w-full bg-surface-container-lowest text-on-surface-variant pt-16 pb-12 border-t border-outline-variant/30 mt-auto">
+  <footer class="w-full bg-surface-container-lowest text-on-surface-variant pt-16 pb-12 border-t border-outline-variant/30 mt-auto junu-reveal">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-12">
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 border-b border-outline-variant/20">
