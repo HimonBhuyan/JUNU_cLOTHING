@@ -1148,15 +1148,15 @@
       <form onsubmit="submitPatronReview(event)" class="space-y-4 text-xs font-label-sm">
         <div class="space-y-1.5">
           <label class="uppercase tracking-wider text-outline block font-semibold">Your Overall Rating</label>
-          <div class="flex items-center space-x-3 text-secondary text-base">
-            <label class="flex items-center space-x-1 cursor-pointer">
-              <input type="radio" name="rating" value="5" checked class="accent-secondary">
-              <span>★★★★★ (5/5)</span>
-            </label>
-            <label class="flex items-center space-x-1 cursor-pointer">
-              <input type="radio" name="rating" value="4" class="accent-secondary">
-              <span>★★★★ (4/5)</span>
-            </label>
+          <div class="p-3 bg-surface border border-outline-variant/40 space-y-2">
+            <div class="flex items-center justify-between">
+              <div id="review-rating-stars" class="flex items-center text-secondary text-xl tracking-wider select-none">★★★★★</div>
+              <span class="font-mono text-sm text-primary font-semibold"><span id="review-rating-value">5</span>/5 · <span id="review-rating-label" class="text-secondary uppercase tracking-wider text-[10px]">Exceptional</span></span>
+            </div>
+            <input type="range" id="review-rating-slider" name="rating" min="1" max="5" step="1" value="5" oninput="updateRatingSlider(this.value)" class="junu-rating-slider text-secondary w-full cursor-pointer" aria-label="Star rating from 1 to 5">
+            <div class="flex justify-between text-[9px] text-outline uppercase tracking-wider">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            </div>
           </div>
         </div>
 

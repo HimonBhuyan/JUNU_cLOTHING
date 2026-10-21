@@ -1485,7 +1485,7 @@ function renderHomeReviews(category = 'all') {
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-1 text-secondary">
-            ${Array.from({ length: rev.rating || 5 }).map(() => '<span class="material-symbols-outlined text-[16px] fill-1 text-secondary">star</span>').join('')}
+            ${renderStarIcons(rev.rating, 'text-[16px]')}
           </div>
           <span class="text-[10px] font-label-sm uppercase tracking-wider text-outline">${rev.date}</span>
         </div>
@@ -1568,7 +1568,7 @@ function renderProductReviews() {
           </div>
         </div>
         <div class="flex items-center space-x-1 text-secondary">
-          ${Array.from({ length: rev.rating || 5 }).map(() => '<span class="material-symbols-outlined text-[15px] fill-1 text-secondary">star</span>').join('')}
+          ${renderStarIcons(rev.rating, 'text-[15px]')}
           <span class="text-[10px] text-outline ml-2">${rev.date}</span>
         </div>
       </div>
@@ -1588,11 +1588,53 @@ function openReviewModal(productName = '') {
       prodInput.value = currentProduct.name;
     }
   }
+  const slider = document.getElementById('review-rating-slider');
+  updateRatingSlider(slider ? slider.value : 5);
   if (modal) {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
+}
+
+(function injectRatingSliderStyles() {
+  if (document.getElementById('junu-rating-slider-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'junu-rating-slider-styles';
+  style.textContent = `
+    .junu-rating-slider { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px; outline: none;
+      background: linear-gradient(to right, currentColor 0%, currentColor var(--fill, 100%), rgba(128,128,128,0.25) var(--fill, 100%), rgba(128,128,128,0.25) 100%); }
+    .junu-rating-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: currentColor; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.35); cursor: grab; transition: transform .15s ease; }
+    .junu-rating-slider::-webkit-slider-thumb:active { transform: scale(1.2); cursor: grabbing; }
+    .junu-rating-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: currentColor;
+      border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.35); cursor: grab; }
+    .junu-rating-slider:focus-visible { box-shadow: 0 0 0 3px rgba(212,175,55,0.35); }
+  `;
+  document.head.appendChild(style);
+})();
+
+const RATING_LABELS = { 1: 'Poor', 2: 'Fair', 3: 'Good', 4: 'Excellent', 5: 'Exceptional' };
+
+function renderStarIcons(rating, sizeClass = 'text-[16px]') {
+  const r = Math.max(1, Math.min(5, parseInt(rating, 10) || 5));
+  return Array.from({ length: 5 }).map((_, i) =>
+    `<span class="material-symbols-outlined ${sizeClass} text-secondary ${i < r ? 'fill-1' : 'opacity-40'}">star</span>`
+  ).join('');
+}
+
+function updateRatingSlider(value) {
+  const v = Math.max(1, Math.min(5, parseInt(value, 10) || 5));
+  document.querySelectorAll('#review-rating-stars').forEach(el => {
+    el.innerHTML = Array.from({ length: 5 }).map((_, i) =>
+      `<span class="transition-all duration-200 ${i < v ? 'opacity-100 scale-110' : 'opacity-25'} inline-block">★</span>`
+    ).join('');
+  });
+  document.querySelectorAll('#review-rating-value').forEach(el => el.textContent = v);
+  document.querySelectorAll('#review-rating-label').forEach(el => el.textContent = RATING_LABELS[v]);
+  document.querySelectorAll('#review-rating-slider').forEach(el => {
+    el.style.setProperty('--fill', `${((v - 1) / 4) * 100}%`);
+  });
 }
 
 function closeReviewModal() {
@@ -1611,7 +1653,7 @@ function submitPatronReview(e) {
   const city = form.querySelector('[name="city"]')?.value.trim() || 'Kathmandu, Nepal';
   const productName = form.querySelector('[name="product"]')?.value.trim() || 'Atelier Monograph Piece';
   const size = form.querySelector('[name="size"]')?.value || 'Custom Fit';
-  const rating = parseInt(form.querySelector('[name="rating"]:checked')?.value || '5', 10);
+  const rating = parseInt(form.querySelector('[name="rating"]')?.value || '5', 10);
   const title = form.querySelector('[name="title"]')?.value.trim() || 'Exquisite Atelier Commission';
   const text = form.querySelector('[name="text"]')?.value.trim() || 'Flawless fit, luxurious French coutil structure, and immaculate packaging.';
 
@@ -1640,6 +1682,7 @@ function submitPatronReview(e) {
 
   closeReviewModal();
   form.reset();
+  updateRatingSlider(5);
   showSalonToast("Thank you for sharing your Atelier experience! Your review is now live.");
 
   // Re-render live
