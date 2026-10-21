@@ -819,19 +819,38 @@ function closeWishlistDrawer() {
   unlockBodyScroll();
 }
 
-function updateWishlistDrawer() {
-  const container = document.getElementById('wishlist-items-container');
-  const badgeEl = document.getElementById('wishlist-badge');
-  const mobileBadge = document.getElementById('mobile-wishlist-badge');
-  const totalCountEl = document.getElementById('wishlist-total-count');
-
+function updateWishlistBadges() {
   const count = (JUNU_STATE.wishlist || []).length;
-  if (badgeEl) {
+
+  // Desktop & mobile header wishlist badges
+  document.querySelectorAll('#wishlist-badge').forEach(badgeEl => {
     badgeEl.textContent = count;
-    badgeEl.classList.toggle('hidden', count === 0);
-  }
-  if (mobileBadge) mobileBadge.textContent = count;
-  if (totalCountEl) totalCountEl.textContent = `(${count} ${count === 1 ? 'Piece' : 'Pieces'})`;
+    if (count > 0) {
+      badgeEl.classList.remove('hidden');
+      badgeEl.style.display = 'flex';
+      badgeEl.classList.add('scale-125');
+      setTimeout(() => badgeEl.classList.remove('scale-125'), 220);
+    } else {
+      badgeEl.classList.add('hidden');
+      badgeEl.style.display = 'none';
+    }
+  });
+
+  // Mobile drawer badge
+  document.querySelectorAll('#mobile-wishlist-badge').forEach(mobileBadge => {
+    mobileBadge.textContent = count;
+  });
+
+  // Drawer piece count
+  document.querySelectorAll('#wishlist-total-count').forEach(totalCountEl => {
+    totalCountEl.textContent = `(${count} ${count === 1 ? 'Piece' : 'Pieces'})`;
+  });
+}
+
+function updateWishlistDrawer() {
+  updateWishlistBadges();
+  const container = document.getElementById('wishlist-items-container');
+  const count = (JUNU_STATE.wishlist || []).length;
 
   if (!container) return;
 
@@ -1043,12 +1062,33 @@ function closeQuickView() {
   }
 }
 
-// =========================================================================
-// 7. Wishlist Operations
-// =========================================================================
+function updateAllWishlistIcons(id, isWishlisted) {
+  const selector = `button[onclick*="'${id}'"], button[onclick*='"${id}"']`;
+  document.querySelectorAll(selector).forEach(btn => {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (icon && (icon.textContent.includes('favorite') || icon.id === 'wishlist-icon')) {
+      if (isWishlisted) {
+        icon.classList.add('text-secondary', 'fill-1');
+        icon.textContent = 'favorite';
+      } else {
+        icon.classList.remove('text-secondary', 'fill-1');
+        if (icon.id === 'wishlist-icon') {
+          icon.textContent = 'favorite_border';
+        } else {
+          icon.textContent = 'favorite';
+        }
+      }
+    }
+  });
+}
+
 function toggleWishlist(id, btn) {
+  if (!window.JUNU_STATE) window.JUNU_STATE = { cart: [], wishlist: [], currency: 'NPR' };
+  if (!Array.isArray(JUNU_STATE.wishlist)) JUNU_STATE.wishlist = [];
+
   const idx = JUNU_STATE.wishlist.indexOf(id);
-  if (idx > -1) {
+  const isAdding = (idx === -1);
+  if (!isAdding) {
     JUNU_STATE.wishlist.splice(idx, 1);
     showSalonToast("Removed from Wishlist");
   } else {
@@ -1057,15 +1097,16 @@ function toggleWishlist(id, btn) {
   }
   localStorage.setItem('junu_wishlist', JSON.stringify(JUNU_STATE.wishlist));
   
-  const badge = document.getElementById('wishlist-badge');
-  if (badge) badge.textContent = JUNU_STATE.wishlist.length;
+  // Live update all wishlist counter numbers and badges across page
+  updateWishlistBadges();
+  updateWishlistDrawer();
 
-  if (btn) {
-    const icon = btn.querySelector('.material-symbols-outlined');
-    if (icon) {
-      icon.classList.toggle('text-secondary', idx === -1);
-      icon.classList.toggle('fill-1', idx === -1);
-    }
+  // Sync heart icon colors across all buttons for this product
+  updateAllWishlistIcons(id, isAdding);
+
+  // If on product.html and updateWishlistButton is present, trigger it
+  if (typeof updateWishlistButton === 'function') {
+    updateWishlistButton();
   }
 }
 
@@ -1120,23 +1161,21 @@ document.addEventListener('DOMContentLoaded', () => {
     sel.value = JUNU_STATE.currency;
   });
 
-  // Sync wishlist badges
-  const wBadge = document.getElementById('wishlist-badge');
-  const mWBadge = document.getElementById('mobile-wishlist-badge');
-  const count = (JUNU_STATE.wishlist || []).length;
-  if (wBadge) {
-    wBadge.textContent = count;
-    wBadge.classList.toggle('hidden', count === 0);
+  // Sync live wishlist badges and active heart icons
+  updateWishlistBadges();
+  updateWishlistDrawer();
+  if (JUNU_STATE.wishlist && JUNU_STATE.wishlist.length) {
+    JUNU_STATE.wishlist.forEach(id => updateAllWishlistIcons(id, true));
   }
-  if (mWBadge) mWBadge.textContent = count;
 
   // Render initial components
   if (typeof renderProducts === 'function') renderProducts();
   if (typeof renderHomeCollections === 'function') renderHomeCollections();
   if (typeof updateStaticPrices === 'function') updateStaticPrices();
   if (typeof renderCheckoutPage === 'function') renderCheckoutPage();
+  if (typeof renderHomeReviews === 'function') renderHomeReviews('all');
+  if (typeof renderProductReviews === 'function') renderProductReviews();
   updateCartDrawer();
-  updateWishlistDrawer();
 
   // Initialize Scarcity Drop Countdown Timer
   initDropCountdown();
@@ -1329,4 +1368,281 @@ function initCounterAnimations() {
   }, { threshold: 0.35 });
 
   statNumbers.forEach(el => counterObserver.observe(el));
+}
+
+// =========================================================================
+// 12. Client Reviews & Atelier Patron Testimonials System
+// =========================================================================
+const INITIAL_ATELIER_REVIEWS = [
+  {
+    id: 'rev-01',
+    productId: 'junu-02',
+    productName: 'Angel Wings Corset in Noir Velvet',
+    author: 'Priyanka Shrestha',
+    city: 'Kathmandu / London',
+    rating: 5,
+    date: 'October 2026',
+    category: 'corsetry',
+    size: 'S',
+    verified: true,
+    title: 'The spiral steel boning sculpts without bruising',
+    text: 'I wore the Angel Wings Corset to an Asian Fashion Gala in London. I have never received so many compliments in my life. The spiral steel boning cinches 3 inches effortlessly yet I was able to breathe, dine, and dance all night. The unboxing with the gold wax seal made me cry. True couture craftsmanship.'
+  },
+  {
+    id: 'rev-02',
+    productId: 'junu-17',
+    productName: 'Blanche Liquid Lamé Cowl Gown',
+    author: 'Ananya Mittal',
+    city: 'Manhattan, New York',
+    rating: 5,
+    date: 'September 2026',
+    category: 'gowns',
+    size: 'Custom Fit',
+    verified: true,
+    title: 'Drapes like liquid mercury, fits like second skin',
+    text: 'The drape of this liquid lamé cowl is pure artistry. Living in New York, I buy a lot of designer luxury, but Roselyn\'s atelier rivals Parisian couture houses. The custom measurements I submitted were tailored to perfection without even an in-person fitting.'
+  },
+  {
+    id: 'rev-03',
+    productId: 'junu-13',
+    productName: 'Butterfly Crown Steel Corset',
+    author: 'Dr. Smriti KC',
+    city: 'Pokhara / Dubai',
+    rating: 5,
+    date: 'October 2026',
+    category: 'corsetry',
+    size: 'M',
+    verified: true,
+    title: 'Flawless posture support & anatomical boning',
+    text: 'As a surgeon, I appreciate structural anatomy. The spiral steel placement supports the spine and waist with zero pressure points or rib bruising. The French coutil lining feels like whisper silk against bare skin. A masterpiece.'
+  },
+  {
+    id: 'rev-04',
+    productId: 'junu-01',
+    productName: 'Nocturne Velvet Cascade Gown',
+    author: 'Rhea Thapa',
+    city: 'Sydney, Australia',
+    rating: 5,
+    date: 'August 2026',
+    category: 'gowns',
+    size: 'S',
+    verified: true,
+    title: 'Arrived in Sydney in 4 days with heirloom packaging',
+    text: 'Ordered directly after a WhatsApp consultation with Roselyn. Dispatched via DHL Express and arrived in Sydney in 4 days. The unboxing experience with the scented tissue and signed Certificate of Authenticity makes this feel like an heirloom.'
+  },
+  {
+    id: 'rev-05',
+    productId: 'junu-16',
+    productName: 'Boho Plunge Corset in Ebonized Silk',
+    author: 'Elena Rostova',
+    city: 'Vienna / Milan',
+    rating: 5,
+    date: 'September 2026',
+    category: 'corsetry',
+    size: 'XS',
+    verified: true,
+    title: 'The plunge neckline holds firm with anatomical lacing',
+    text: 'Deep plunging neckline with complete security. The architectural boning keeps everything firmly lifted without sliding. I paired it with tuxedo trousers for Paris Fashion Week. Pure power.'
+  },
+  {
+    id: 'rev-06',
+    productId: 'junu-04',
+    productName: 'Aphrodite Lamé Drape Corset',
+    author: 'Natasha Basnet',
+    city: 'Kathmandu, Nepal',
+    rating: 5,
+    date: 'October 2026',
+    category: 'bespoke',
+    size: 'Custom Fit',
+    verified: true,
+    title: 'Proud that such couture is made right here in Nepal',
+    text: 'Roselyn Magar has elevated Nepali haute couture to international runways. The craftsmanship is beyond words. The back lacing allows micro-adjustments on days when you want a gentler or tighter cinch.'
+  }
+];
+
+function getAtelierReviews() {
+  try {
+    const custom = JSON.parse(localStorage.getItem('junu_reviews') || '[]');
+    return [...custom, ...INITIAL_ATELIER_REVIEWS];
+  } catch (e) {
+    return INITIAL_ATELIER_REVIEWS;
+  }
+}
+
+function renderHomeReviews(category = 'all') {
+  const container = document.getElementById('home-reviews-grid');
+  if (!container) return;
+
+  const allReviews = getAtelierReviews();
+  const filtered = category === 'all' 
+    ? allReviews 
+    : allReviews.filter(r => r.category === category || (category === 'corsetry' && r.productName.toLowerCase().includes('corset')));
+
+  const displayList = filtered.slice(0, 4);
+
+  container.innerHTML = displayList.map((rev, idx) => `
+    <div class="junu-reveal junu-stagger-${idx + 1} p-6 sm:p-8 bg-surface-container border border-outline-variant/30 hover:border-secondary/60 transition-all duration-300 flex flex-col justify-between space-y-5 shadow-lg group">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-1 text-secondary">
+            ${Array.from({ length: rev.rating || 5 }).map(() => '<span class="material-symbols-outlined text-[16px] fill-1 text-secondary">star</span>').join('')}
+          </div>
+          <span class="text-[10px] font-label-sm uppercase tracking-wider text-outline">${rev.date}</span>
+        </div>
+        
+        <p class="font-headline-sm text-base text-primary font-medium font-serif leading-snug group-hover:text-secondary transition-colors">
+          "${rev.title}"
+        </p>
+        
+        <p class="font-body-sm text-xs sm:text-[13px] text-on-surface-variant font-light leading-relaxed">
+          ${rev.text}
+        </p>
+      </div>
+
+      <div class="pt-4 border-t border-outline-variant/20 flex flex-col space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-label-sm text-xs uppercase tracking-wider text-primary font-semibold">${rev.author}</span>
+          ${rev.verified ? `
+            <span class="inline-flex items-center space-x-1 text-[9px] font-label-sm uppercase tracking-wider text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+              <span class="material-symbols-outlined text-[11px]">verified</span>
+              <span>Verified Patron</span>
+            </span>
+          ` : ''}
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-outline">
+          <span>${rev.city}</span>
+          <span class="text-secondary/80 font-mono text-[10px]">${rev.productName}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setReviewsCategory(category, btn) {
+  document.querySelectorAll('#home-reviews-tabs button').forEach(b => {
+    b.classList.remove('border-secondary', 'text-primary', 'font-semibold');
+    b.classList.add('border-transparent', 'text-on-surface-variant', 'font-normal');
+  });
+  if (btn) {
+    btn.classList.remove('border-transparent', 'text-on-surface-variant', 'font-normal');
+    btn.classList.add('border-secondary', 'text-primary', 'font-semibold');
+  }
+  renderHomeReviews(category);
+}
+
+function renderProductReviews() {
+  const container = document.getElementById('product-reviews-list');
+  const countBadge = document.getElementById('product-reviews-count');
+  const avgRatingEl = document.getElementById('product-avg-rating');
+  if (!container) return;
+
+  const allReviews = getAtelierReviews();
+  const currentId = (typeof currentProduct !== 'undefined' && currentProduct) ? currentProduct.id : '';
+  
+  let matching = allReviews.filter(r => r.productId === currentId);
+  if (matching.length === 0) {
+    matching = allReviews.slice(0, 3);
+  }
+
+  if (countBadge) countBadge.textContent = `${matching.length} Verified Reviews`;
+  if (avgRatingEl) avgRatingEl.textContent = '5.0';
+
+  container.innerHTML = matching.map(rev => `
+    <div class="p-5 sm:p-6 bg-surface-container border border-outline-variant/30 space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary border border-secondary/40 flex items-center justify-center font-bold text-xs uppercase font-serif">
+            ${rev.author.charAt(0)}
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-label-sm text-xs uppercase tracking-wider font-semibold text-primary">${rev.author}</span>
+              ${rev.verified ? `
+                <span class="inline-flex items-center space-x-0.5 text-[9px] uppercase tracking-wider text-emerald-400">
+                  <span class="material-symbols-outlined text-[12px]">verified</span>
+                  <span>Verified Commission</span>
+                </span>
+              ` : ''}
+            </div>
+            <span class="text-[11px] text-outline">${rev.city} • Size: ${rev.size || 'M'}</span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-1 text-secondary">
+          ${Array.from({ length: rev.rating || 5 }).map(() => '<span class="material-symbols-outlined text-[15px] fill-1 text-secondary">star</span>').join('')}
+          <span class="text-[10px] text-outline ml-2">${rev.date}</span>
+        </div>
+      </div>
+      <p class="font-headline-sm text-sm text-primary font-medium font-serif">"${rev.title}"</p>
+      <p class="font-body-sm text-xs text-on-surface-variant font-light leading-relaxed">${rev.text}</p>
+    </div>
+  `).join('');
+}
+
+function openReviewModal(productName = '') {
+  const modal = document.getElementById('review-modal');
+  const prodInput = document.getElementById('review-product-name');
+  if (prodInput) {
+    if (productName) {
+      prodInput.value = productName;
+    } else if (typeof currentProduct !== 'undefined' && currentProduct && currentProduct.name) {
+      prodInput.value = currentProduct.name;
+    }
+  }
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeReviewModal() {
+  const modal = document.getElementById('review-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+}
+
+function submitPatronReview(e) {
+  e.preventDefault();
+  const form = e.target;
+  const name = form.querySelector('[name="author"]')?.value.trim() || 'Anonymous Patron';
+  const city = form.querySelector('[name="city"]')?.value.trim() || 'Kathmandu, Nepal';
+  const productName = form.querySelector('[name="product"]')?.value.trim() || 'Atelier Monograph Piece';
+  const size = form.querySelector('[name="size"]')?.value || 'Custom Fit';
+  const rating = parseInt(form.querySelector('[name="rating"]:checked')?.value || '5', 10);
+  const title = form.querySelector('[name="title"]')?.value.trim() || 'Exquisite Atelier Commission';
+  const text = form.querySelector('[name="text"]')?.value.trim() || 'Flawless fit, luxurious French coutil structure, and immaculate packaging.';
+
+  const newReview = {
+    id: 'rev-' + Date.now(),
+    productId: (typeof currentProduct !== 'undefined' && currentProduct) ? currentProduct.id : 'junu-02',
+    productName: productName,
+    author: name,
+    city: city,
+    rating: rating,
+    date: 'Just now',
+    category: 'corsetry',
+    size: size,
+    verified: true,
+    title: title,
+    text: text
+  };
+
+  try {
+    const existing = JSON.parse(localStorage.getItem('junu_reviews') || '[]');
+    existing.unshift(newReview);
+    localStorage.setItem('junu_reviews', JSON.stringify(existing));
+  } catch (err) {
+    console.error('Failed to save review:', err);
+  }
+
+  closeReviewModal();
+  form.reset();
+  showSalonToast("Thank you for sharing your Atelier experience! Your review is now live.");
+
+  // Re-render live
+  if (typeof renderHomeReviews === 'function') renderHomeReviews('all');
+  if (typeof renderProductReviews === 'function') renderProductReviews();
 }

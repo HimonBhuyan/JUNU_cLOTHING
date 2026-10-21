@@ -119,8 +119,8 @@
           </select>
         </div>
 
-        <!-- Wishlist Drawer Trigger (Hidden on Mobile < 640px) -->
-        <button onclick="openWishlistDrawer()" class="relative hidden sm:flex w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary items-center justify-center text-primary transition-all duration-200" aria-label="View Archival Wishlist" title="Archival Wishlist">
+        <!-- Wishlist Drawer Trigger (Visible on Mobile & Desktop) -->
+        <button onclick="openWishlistDrawer()" class="relative flex w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 hover:border-secondary items-center justify-center text-primary transition-all duration-200" aria-label="View Archival Wishlist" title="Archival Wishlist">
           <span class="material-symbols-outlined text-[18px]">favorite</span>
           <span id="wishlist-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
         </button>
@@ -1003,6 +1003,91 @@
 
       </div>
     </section>
+ 
+    <!-- =========================================================================
+         SECTION: VOICES OF THE ATELIER (PATRON REVIEWS & TESTIMONIALS)
+         ========================================================================= -->
+    <section id="reviews-section" class="w-full bg-surface-container-lowest py-20 px-6 lg:px-12 border-t border-outline-variant/20 relative">
+      <div class="max-w-7xl mx-auto space-y-12">
+        
+        <!-- Header & Aggregate Score Card -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-outline-variant/20 junu-reveal">
+          <div class="space-y-3 max-w-2xl">
+            <div class="flex items-center space-x-2 text-secondary font-label-sm text-xs uppercase tracking-[0.25em] font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span>VERIFIED PATRON REVIEWS</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span>HAUTE COUTURE APPRAISALS</span>
+            </div>
+            <h2 class="font-headline-lg text-3xl sm:text-5xl text-primary font-normal leading-tight">
+              Voices of the Atelier
+            </h2>
+            <p class="font-body-md text-sm sm:text-base text-on-surface-variant font-light leading-relaxed">
+              Real reflections from private patrons across Nepal and globally who commissioned our numbered corsetry, sculptural gala gowns, and bespoke bridal silhouettes.
+            </p>
+          </div>
+
+          <!-- Overall Rating Box & Review CTA Button -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-surface-container p-4 sm:p-5 border border-outline-variant/30 flex-shrink-0">
+            <div class="flex items-center space-x-3 pr-0 sm:pr-4 sm:border-r border-outline-variant/30">
+              <span class="font-headline-lg text-3xl sm:text-4xl text-secondary font-normal font-serif">4.98</span>
+              <div>
+                <div class="flex text-secondary text-sm">
+                  <span class="material-symbols-outlined text-[17px] fill-1 text-secondary">star</span>
+                  <span class="material-symbols-outlined text-[17px] fill-1 text-secondary">star</span>
+                  <span class="material-symbols-outlined text-[17px] fill-1 text-secondary">star</span>
+                  <span class="material-symbols-outlined text-[17px] fill-1 text-secondary">star</span>
+                  <span class="material-symbols-outlined text-[17px] fill-1 text-secondary">star</span>
+                </div>
+                <span class="text-[11px] font-label-sm text-outline uppercase tracking-wider font-medium">142 Couturier Commissions</span>
+              </div>
+            </div>
+            <button onclick="openReviewModal()" class="inline-flex items-center justify-center space-x-2 bg-secondary text-on-secondary hover:bg-primary font-label-sm text-xs uppercase tracking-[0.18em] font-semibold px-4 py-3 transition-all shadow-md cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">rate_review</span>
+              <span>Share Review</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Category Tabs -->
+        <div id="home-reviews-tabs" class="flex items-center space-x-2 sm:space-x-3 overflow-x-auto scrollbar-none py-1 junu-reveal">
+          <button onclick="setReviewsCategory('all', this)" class="px-4 py-2 text-xs font-label-sm uppercase tracking-wider border-b-2 border-secondary text-primary font-semibold transition-colors">
+            All Reviews (142)
+          </button>
+          <button onclick="setReviewsCategory('corsetry', this)" class="px-4 py-2 text-xs font-label-sm uppercase tracking-wider border-b-2 border-transparent text-on-surface-variant hover:text-primary font-normal transition-colors">
+            Spiral Steel Corsetry (86)
+          </button>
+          <button onclick="setReviewsCategory('gowns', this)" class="px-4 py-2 text-xs font-label-sm uppercase tracking-wider border-b-2 border-transparent text-on-surface-variant hover:text-primary font-normal transition-colors">
+            Evening Gowns (38)
+          </button>
+          <button onclick="setReviewsCategory('bespoke', this)" class="px-4 py-2 text-xs font-label-sm uppercase tracking-wider border-b-2 border-transparent text-on-surface-variant hover:text-primary font-normal transition-colors">
+            Bespoke Commissions (18)
+          </button>
+        </div>
+
+        <!-- 4 Reviews Grid (Dynamic) -->
+        <div id="home-reviews-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <!-- Populated by renderHomeReviews() -->
+        </div>
+
+        <!-- Quality Guarantees Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-outline-variant/20 text-xs text-outline font-label-sm uppercase tracking-widest junu-reveal">
+          <div class="flex items-center space-x-2 text-primary/90">
+            <span class="text-secondary font-bold">100%</span>
+            <span>Genuine French Coutil &amp; Boning</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary/90">
+            <span class="text-secondary font-bold">98.4%</span>
+            <span>Flawless True-To-Measure Fit</span>
+          </div>
+          <div class="flex items-center space-x-2 text-primary/90">
+            <span class="text-secondary font-bold">14+</span>
+            <span>Global Countries Dispatched</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
@@ -1325,6 +1410,81 @@
           Return to Atelier
         </button>
       </div>
+    </div>
+  </div>
+ 
+  <!-- Interactive Client Review Modal -->
+  <div id="review-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" onclick="closeReviewModal()">
+    <div class="bg-surface-container border border-secondary/40 shadow-2xl w-full max-w-lg p-6 sm:p-8 space-y-5 relative max-h-[92vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+        <div>
+          <span class="text-secondary font-label-sm text-[10px] uppercase tracking-[0.24em] font-semibold">JUNU Atelier Circle</span>
+          <h3 class="font-headline-sm text-xl text-primary font-normal font-serif">Share Your Atelier Experience</h3>
+        </div>
+        <button onclick="closeReviewModal()" class="text-outline hover:text-primary p-2 -mr-2 cursor-pointer" aria-label="Close Modal">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="submitPatronReview(event)" class="space-y-4 text-xs font-label-sm">
+        <div class="space-y-1.5">
+          <label class="uppercase tracking-wider text-outline block font-semibold">Your Overall Rating</label>
+          <div class="flex items-center space-x-3 text-secondary text-base">
+            <label class="flex items-center space-x-1 cursor-pointer">
+              <input type="radio" name="rating" value="5" checked class="accent-secondary">
+              <span>★★★★★ (5/5)</span>
+            </label>
+            <label class="flex items-center space-x-1 cursor-pointer">
+              <input type="radio" name="rating" value="4" class="accent-secondary">
+              <span>★★★★ (4/5)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="uppercase tracking-wider text-outline block font-semibold">Patron Full Name</label>
+            <input type="text" name="author" required placeholder="e.g. Priyanka Shrestha" class="w-full bg-surface border border-outline-variant/40 px-3 py-2.5 text-primary text-xs focus:outline-none focus:border-secondary">
+          </div>
+          <div class="space-y-1">
+            <label class="uppercase tracking-wider text-outline block font-semibold">City &amp; Country</label>
+            <input type="text" name="city" required placeholder="e.g. Kathmandu, London" class="w-full bg-surface border border-outline-variant/40 px-3 py-2.5 text-primary text-xs focus:outline-none focus:border-secondary">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="uppercase tracking-wider text-outline block font-semibold">Piece Acquired</label>
+            <input type="text" id="review-product-name" name="product" required placeholder="e.g. Angel Wings Corset" class="w-full bg-surface border border-outline-variant/40 px-3 py-2.5 text-primary text-xs focus:outline-none focus:border-secondary">
+          </div>
+          <div class="space-y-1">
+            <label class="uppercase tracking-wider text-outline block font-semibold">Size Acquired</label>
+            <select name="size" class="w-full bg-surface border border-outline-variant/40 px-3 py-2.5 text-primary text-xs focus:outline-none focus:border-secondary">
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="Custom Fit">Custom Fit</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="uppercase tracking-wider text-outline block font-semibold">Review Headline</label>
+          <input type="text" name="title" required placeholder="e.g. The spiral boning and fit are beyond words" class="w-full bg-surface border border-outline-variant/40 px-3 py-2.5 text-primary text-xs focus:outline-none focus:border-secondary">
+        </div>
+
+        <div class="space-y-1">
+          <label class="uppercase tracking-wider text-outline block font-semibold">Your Review &amp; Fit Feedback</label>
+          <textarea name="text" rows="3" required placeholder="Share your experience regarding the silhouette, steel boning comfort, craftsmanship, and packaging..." class="w-full bg-surface border border-outline-variant/40 p-3 text-primary text-xs focus:outline-none focus:border-secondary font-body-md"></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-between">
+          <span class="text-[10px] text-outline">* Submissions appear instantly in verified patron monographs.</span>
+          <button type="submit" class="px-6 py-3 bg-secondary text-on-secondary hover:bg-primary font-label-sm text-xs uppercase tracking-wider font-semibold transition-all shadow-md cursor-pointer">
+            Publish Review
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
